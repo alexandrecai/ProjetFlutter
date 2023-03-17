@@ -1,6 +1,7 @@
 class Categorie{
-  String name;
+  String libelle;
+  int ID;
 
-  Categorie(this.name);
+  Categorie(this.libelle);
 
 }
