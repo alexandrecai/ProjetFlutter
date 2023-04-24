@@ -2,6 +2,5 @@ class Categorie{
   String libelle;
   int ID;
 
-  Categorie(this.libelle);
-
+  Categorie(this.libelle, this.ID);
 }

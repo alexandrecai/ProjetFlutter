@@ -6,8 +6,10 @@ class User{
   String prenom;
   String mail;
   String password;
+  bool isAdmin;
   List<Book> wishlist;
+  List<Book> livresEmpruntes;
 
-
-  User(this.nom, this.prenom, this.mail, this.password, this.wishlist);
+  User(this.ID, this.nom, this.prenom, this.mail, this.password, this.isAdmin,
+      this.wishlist, this.livresEmpruntes);
 }
