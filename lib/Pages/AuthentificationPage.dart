@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:projetflutter/Controllers/HttpService.dart';
+import 'package:projetflutter/Controllers/SQLiteController.dart';
 
+import '../Objects/Author.dart';
 import 'LoginPage.dart';
 import 'RegisterPage.dart';
 
@@ -22,6 +25,22 @@ class AuthentificationState extends State<AuthentificationPage>{
 
   @override
   Widget build(BuildContext context) {
+    var httpservice = HttpService();
+  /*
+    var controllerSql = SQLiteController();
+
+    var author = httpservice.getAuthorByID(1);
+
+
+    var author = Author(1,"Etoile","Patrick");
+    var author2 = Author(1,"Eponge","Bob");
+    controllerSql.insertAuteur(author);
+    controllerSql.insertAuteur(author2);
+
+
+     */
+    //var authorlist = controllerSql.getAuthor().;
+
     return Scaffold(
       backgroundColor: Colors.grey,
       body: Column(
@@ -29,16 +48,24 @@ class AuthentificationState extends State<AuthentificationPage>{
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              FutureBuilder<String>(
+                future: httpservice.getAuthorByID(1),
+                //initialData: List,
+                builder: (context, snapshot){
+                  return snapshot.hasData ? Text(snapshot.data!):
+                  const Text("nodata");
+                },
+              ),
               Padding(
-                  padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(suggestionText,
                   softWrap: false,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 15,
                     color: Colors.white,
                   ),),
 
-                ),
+              ),
 
               Padding(
                 padding: const EdgeInsets.all(8.0),
