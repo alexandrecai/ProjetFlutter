@@ -1,64 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:projetflutter/Pages/AuthentificationPage.dart';
 import 'package:projetflutter/Pages/BookCreationPage.dart';
+import 'package:projetflutter/Pages/LoginPage.dart';
+import 'package:projetflutter/Pages/RegisterPage.dart';
 
-class MainPage extends StatelessWidget{
+class MainPage extends StatefulWidget {
 
+  @override
+  State<StatefulWidget> createState() => MainPageState();
+}
+
+class MainPageState extends State<MainPage>{
+
+  int selectedIndex = 0;
+
+  final List<Widget> pages = [
+    AuthentificationPage(),
+    BookCreationPage(),
+    RegisterPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
-     backgroundColor: Colors.white,
-     body: Center(
-       child: Column(
-         mainAxisAlignment: MainAxisAlignment.center,
-         crossAxisAlignment: CrossAxisAlignment.center,
-         children: [
-           Container(
-             padding: EdgeInsets.zero, // padding - à modifier sûrement
-             child: ElevatedButton(
-               style: ElevatedButton.styleFrom(
-                 // set button style
-               ),
-               onPressed: () {
-                 Navigator.push(context, MaterialPageRoute(
-                     builder: (context) {
-                       return BookCreationPage();
-                     },
-                 ),
-                 );
-               },
-               child: Text(
-                   "Ajouter Livre",
-                 // style : ajouter une police / une taille
-               ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      bottomNavigationBar: MediaQuery.of(context).size.width < 600?
+      BottomNavigationBar(
+        currentIndex: selectedIndex,
+        type: BottomNavigationBarType.fixed,
+        onTap: (int index){
+          setState((){
+            selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.person),label: "Connexion"),
+          BottomNavigationBarItem(icon: Icon(Icons.book),label: "Ajoute un livre"),
+          BottomNavigationBarItem(icon: Icon(Icons.library_books),label: "Bibliothèque"),
+          BottomNavigationBarItem(icon: Icon(Icons.star),label: "Wishlist"),
 
-             ),
-           ),
-           Container(
-             padding: EdgeInsets.zero, // padding - à modifier sûrement
-             child: ElevatedButton(
-               style: ElevatedButton.styleFrom(
-                 // set button style
-               ),
-               onPressed: () {
-                 Navigator.push(context, MaterialPageRoute(
-                   builder: (context) {
-                     return BookCreationPage(); // à modifier
-                   },
-                 ),
-                 );
-               },
-               child: Text(
-                 "Consulter mon profil",
-                 // style : ajouter une police / une taille
-               ),
+        ],
+      ):null,
+      backgroundColor: Colors.white,
+      body: Row(
+        children: [
 
-             ),
-           ),
-         ],
-       ),
-     ),
-   );
+          if (MediaQuery.of(context).size.width >= 600)
+            LayoutBuilder(builder: (context,constraints){
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: IntrinsicHeight(
+                    child: NavigationRail(
+
+                      onDestinationSelected: (int index) {
+                        setState(() {
+                          selectedIndex = index;
+                        });
+                      },
+                      selectedIndex: selectedIndex, destinations: const [
+                      NavigationRailDestination(
+                          icon: Icon(Icons.person),label: Text("Connexion")),
+                      NavigationRailDestination(
+                          icon: Icon(Icons.book), label: Text('Ajoute un livre')),
+                      NavigationRailDestination(
+                          icon: Icon(Icons.library_books), label: Text('Bibliothèque')),
+                      NavigationRailDestination(
+                          icon: Icon(Icons.star), label: Text('Wishlist')),],
+                      labelType: NavigationRailLabelType.all,
+                      selectedLabelTextStyle: const TextStyle(
+                        color: Colors.indigoAccent,
+                      ),
+                      leading: Column(
+                        children: const [
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),),
+                  ),
+                ),
+              );
+            })
+
+          ,
+          Expanded(child: pages[selectedIndex]),
+        ]
+
+      ),
+
+    );
+
+
   }
 
 }
