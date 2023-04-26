@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projetflutter/Pages/AuthentificationPage.dart';
 import 'package:projetflutter/Pages/BookCreationPage.dart';
+import 'package:projetflutter/Pages/BookListPage.dart';
 import 'package:projetflutter/Pages/LoginPage.dart';
 import 'package:projetflutter/Pages/RegisterPage.dart';
 
@@ -17,6 +18,7 @@ class MainPageState extends State<MainPage>{
   final List<Widget> pages = [
     AuthentificationPage(),
     BookCreationPage(),
+    BookListPage(),
     RegisterPage(),
   ];
 
