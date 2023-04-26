@@ -4,6 +4,7 @@ import 'package:projetflutter/Pages/BookCreationPage.dart';
 import 'package:projetflutter/Pages/BookListPage.dart';
 import 'package:projetflutter/Pages/LoginPage.dart';
 import 'package:projetflutter/Pages/RegisterPage.dart';
+import 'package:projetflutter/Pages/WishlistPage.dart';
 
 class MainPage extends StatefulWidget {
 
@@ -19,7 +20,8 @@ class MainPageState extends State<MainPage>{
     AuthentificationPage(),
     BookCreationPage(),
     BookListPage(),
-    RegisterPage(),
+    FavoritesPage(),
+
   ];
 
   @override

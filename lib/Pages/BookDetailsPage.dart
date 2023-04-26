@@ -1,22 +1,59 @@
 import 'package:flutter/material.dart';
 
-class BookDetailsPage extends StatefulWidget {
-  const BookDetailsPage({super.key});
-  @override
-  _BookDetailsPageState createState() => _BookDetailsPageState();
-}
+class BookDetailsPage extends StatelessWidget {
+  final String title;
+  final String author;
+  final String description;
+  final String year;
+  final String isbn;
 
-class _BookDetailsPageState extends State<BookDetailsPage> {
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
-  }
+  const BookDetailsPage({
+    Key? key,
+    required this.title,
+    required this.author,
+    required this.description,
+    required this.year,
+    required this.isbn,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              author,
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              description,
+              style: TextStyle(fontSize: 18.0),
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              'Année de publication: $year',
+              style: TextStyle(fontSize: 18.0),
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              'ISBN: $isbn',
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
