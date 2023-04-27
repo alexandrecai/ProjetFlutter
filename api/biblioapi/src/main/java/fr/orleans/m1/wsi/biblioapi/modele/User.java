@@ -1,26 +1,41 @@
 package fr.orleans.m1.wsi.biblioapi.modele;
 
-import java.util.List;
+import jakarta.persistence.*;
 
-public class User {
+import java.io.Serializable;
+import java.util.List;
+@Entity
+@Table(name = "utilisateur")
+public class User implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
+    @Column(name = "nom")
     private String nom;
+    @Column(name = "prenom")
     private String prenom;
+    @Column(name = "mail")
     private String mail;
+    @Column(name = "mdp")
     private String password;
+    @Column(name = "isAdmin")
     private boolean isAdmin;
-    private List<Book> wishlist;
+    @OneToMany
+    @JoinColumn(name = "livreEmprunte")
     private List<Book> livresEmpruntes;
 
-    public User(int ID, String nom, String prenom, String mail, String password, boolean isAdmin, List<Book> wishlist, List<Book> livresEmpruntes) {
+    public User(int ID, String nom, String prenom, String mail, String password, boolean isAdmin, List<Book> livresEmpruntes) {
         this.ID = ID;
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
         this.password = password;
         this.isAdmin = isAdmin;
-        this.wishlist = wishlist;
         this.livresEmpruntes = livresEmpruntes;
+    }
+
+    public User() {
+
     }
 
     public int getID() {
@@ -69,14 +84,6 @@ public class User {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
-    }
-
-    public List<Book> getWishlist() {
-        return wishlist;
-    }
-
-    public void setWishlist(List<Book> wishlist) {
-        this.wishlist = wishlist;
     }
 
     public List<Book> getLivresEmpruntes() {

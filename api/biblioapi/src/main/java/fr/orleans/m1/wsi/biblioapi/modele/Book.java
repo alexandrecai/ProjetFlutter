@@ -1,22 +1,38 @@
 package fr.orleans.m1.wsi.biblioapi.modele;
 
+import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Book {
-
+@Entity
+@Table(name = "livre")
+public class Book implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
+    @Column(name = "nom")
     private String name;
+    @Column(name = "description")
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "categorie")
     private Categorie categorie;
-    private MaisonEdition maisonEdition;
+    @Column(name = "maisonEdition")
+    private int maisonEdition;
+    @ManyToOne
+    @JoinColumn(name = "auteur")
     private Author author;
+    @Column(name = "cote")
     private String cote;
+    @Column(name = "ISBN")
     private String ISBN;
+    @Column(name = "statut")
     private boolean isAvailable;
+    @Column(name = "annee")
     private int releaseYear;
-    private List<User> inWishlist;
 
-    public Book(int ID, String name, String description, Categorie categorie, MaisonEdition maisonEdition, Author author, String cote, String ISBN, boolean isAvailable, int releaseYear, List<User> inWishlist) {
+    public Book(int ID, String name, String description, Categorie categorie, int maisonEdition, Author author, String cote, String ISBN, boolean isAvailable, int releaseYear) {
         this.ID = ID;
         this.name = name;
         this.description = description;
@@ -27,8 +43,12 @@ public class Book {
         this.ISBN = ISBN;
         this.isAvailable = isAvailable;
         this.releaseYear = releaseYear;
-        this.inWishlist = inWishlist;
     }
+
+    public Book() {
+
+    }
+
 
     public int getID() {
         return ID;
@@ -62,11 +82,11 @@ public class Book {
         this.categorie = categorie;
     }
 
-    public MaisonEdition getMaisonEdition() {
+    public int getMaisonEdition() {
         return maisonEdition;
     }
 
-    public void setMaisonEdition(MaisonEdition maisonEdition) {
+    public void setMaisonEdition(int maisonEdition) {
         this.maisonEdition = maisonEdition;
     }
 
@@ -110,11 +130,4 @@ public class Book {
         this.releaseYear = releaseYear;
     }
 
-    public List<User> getInWishlist() {
-        return inWishlist;
-    }
-
-    public void setInWishlist(List<User> inWishlist) {
-        this.inWishlist = inWishlist;
-    }
 }
