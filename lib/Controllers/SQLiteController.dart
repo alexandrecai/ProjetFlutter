@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:projetflutter/Objects/Author.dart';
+
 class SQLiteController {
 
   String path = join('assets','biblio.db');
@@ -24,7 +25,7 @@ class SQLiteController {
     );
   }
 
-  Future<List<Author>> getAuthor() async {
+  Future<List<Author>> getAllAuthors() async {
 
     bool exist = await databaseExists(path);
 
@@ -36,8 +37,8 @@ class SQLiteController {
       final List<Map<String, dynamic>> maps = await database.rawQuery('SELECT * FROM auteur;');
 
       close(database);
-
-      print(maps);
+      print("test : " + maps.length.toString());
+      print(maps.last);
 
       return List.generate(maps.length, (i) {
         return Author( maps[i]['id'], maps[i]['nom'], maps[i]['prenom']);
@@ -49,6 +50,35 @@ class SQLiteController {
       initDB();
 
       List<Author> author = [];
+
+      return author;
+    }
+
+  }
+
+  Future<Author> getAuthorByID(int ID) async {
+
+    bool exist = await databaseExists(path);
+
+    if(exist){
+      print("DB exist");
+
+      final database = await openDatabase(path);
+
+      final List<Map<String, dynamic>> maps = await database.rawQuery('SELECT * FROM auteur WHERE id = "$ID";');
+
+      close(database);
+
+      print(maps);
+
+      return Author( maps[0]['id'], maps[0]['nom'], maps[0]['prenom']);
+    }
+    else{
+      print("DB no exist");
+
+      initDB();
+
+      Author author = Author(ID, "NoAuthor", "NoAuthor");
 
       return author;
     }
@@ -80,7 +110,7 @@ class SQLiteController {
 
       close(database);
 
-      await getAuthor();
+      await getAllAuthors();
     }
   }
 
