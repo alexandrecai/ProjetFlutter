@@ -1,6 +1,11 @@
 class Categorie{
-  String libelle;
   int ID;
+  String libelle;
 
-  Categorie(this.libelle, this.ID);
+  Categorie(this.ID,this.libelle);
+
+  @override
+  String toString() {
+    return 'Categorie{ID: $ID, libelle: $libelle}';
+  }
 }

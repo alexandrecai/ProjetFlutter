@@ -51,7 +51,7 @@ class AuthentificationState extends State<AuthentificationPage>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FutureBuilder<String>(
-                future: httpservice.deleteAuthorById(6),
+                future: httpservice.deleteAuthorByID(6),
                 //initialData: List,
                 builder: (context, snapshot){
                   return snapshot.hasData ? Text(snapshot.data!):

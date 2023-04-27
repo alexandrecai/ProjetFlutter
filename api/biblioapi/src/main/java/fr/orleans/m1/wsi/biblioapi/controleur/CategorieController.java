@@ -1,7 +1,7 @@
 package fr.orleans.m1.wsi.biblioapi.controleur;
 
-import fr.orleans.m1.wsi.biblioapi.modele.Author;
-import fr.orleans.m1.wsi.biblioapi.modele.AuthorService;
+import fr.orleans.m1.wsi.biblioapi.modele.Categorie;
+import fr.orleans.m1.wsi.biblioapi.modele.CategorieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,35 +12,35 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/authors")
-public class AuthorController {
+@RequestMapping("/categories")
+public class CategorieController {
 
-    final AuthorService authorService;
+    final CategorieService categorieService;
 
-    public AuthorController(AuthorService authorService) {
-        this.authorService = authorService;
+    public CategorieController(CategorieService categorieService) {
+        this.categorieService = categorieService;
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Author> getAuthor(@PathVariable Integer id){
+    public ResponseEntity<Categorie> getCategorie(@PathVariable Integer id){
         try {
-            Author author = authorService.getAuthor(id);
-            return new ResponseEntity<Author>(author, HttpStatus.OK);
+            Categorie categorie = categorieService.getCategorie(id);
+            return new ResponseEntity<Categorie>(categorie, HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<Author>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Categorie>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<String> postAuthor(@RequestParam String nom, @RequestParam String prenom, @RequestParam int id) throws URISyntaxException {
+    public ResponseEntity<String> postCategorie(@RequestParam String nom, @RequestParam int id) throws URISyntaxException {
         try {
-            Author authorTest = authorService.getAuthor(id);
+            Categorie categorieTest = categorieService.getCategorie(id);
 
         }catch (Exception e){
             try {
-                Author author = new Author(id,nom,prenom);
-                authorService.addAuthor(author);
+                Categorie categorie = new Categorie(nom, id);
+                categorieService.addCategorie(categorie);
             }catch (Exception ex){
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
@@ -52,20 +52,20 @@ public class AuthorController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Author>> getAll(){
+    public ResponseEntity<List<Categorie>> getAll(){
         try {
-            List<Author> authors = authorService.getAllAuthor();
-            return new ResponseEntity<List<Author>>(authors, HttpStatus.OK);
+            List<Categorie> categories = categorieService.getAllCategorie();
+            return new ResponseEntity<List<Categorie>>(categories, HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<List<Author>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<List<Categorie>>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/size")
     public ResponseEntity<Integer> getSize(){
         try {
-            List<Author> authors = authorService.getAllAuthor();
-            return new ResponseEntity<Integer>(authors.size(), HttpStatus.OK);
+            List<Categorie> categories = categorieService.getAllCategorie();
+            return new ResponseEntity<Integer>(categories.size(), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<Integer>(HttpStatus.NOT_FOUND);
         }
@@ -74,7 +74,7 @@ public class AuthorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeById(@PathVariable Integer id){
         try {
-            authorService.deleteAuthor(id);
+            categorieService.deleteCategorie(id);
             return new ResponseEntity<Void>( HttpStatus.NO_CONTENT);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);

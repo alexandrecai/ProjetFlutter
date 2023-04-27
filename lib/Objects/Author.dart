@@ -12,4 +12,9 @@ class Author{
       'prenom' : prenom
     };
   }
+
+  @override
+  String toString() {
+    return 'Author{ID: $ID, nom: $nom, prenom: $prenom}';
+  }
 }

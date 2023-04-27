@@ -8,13 +8,13 @@ import java.io.Serializable;
 @Table(name = "categorie")
 public class Categorie implements Serializable {
     @Column(name = "nom")
-    private String libelle;
+    private String nom;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
 
-    public Categorie(String libelle, int ID) {
-        this.libelle = libelle;
+    public Categorie(String nom, int ID) {
+        this.nom = nom;
         this.ID = ID;
     }
 
@@ -22,12 +22,12 @@ public class Categorie implements Serializable {
 
     }
 
-    public String getLibelle() {
-        return libelle;
+    public String getNom() {
+        return nom;
     }
 
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public int getID() {
