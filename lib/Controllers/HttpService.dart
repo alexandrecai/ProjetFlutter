@@ -10,8 +10,8 @@ class HttpService {
 
 
 
-  final String authorURL = "localhost:8080";  //       Pour le Web
-  //final String authorURL = "10.0.2.2:8080"; //        pour Android
+  //final String authorURL = "localhost:8080";  //       Pour le Web
+  final String authorURL = "10.0.2.2:8080"; //        pour Android
 
   Future<String> getAuthorByID(int id) async {
 
