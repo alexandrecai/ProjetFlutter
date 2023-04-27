@@ -29,7 +29,7 @@ class BookDetailsPage extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.0),
             Text(
@@ -43,13 +43,37 @@ class BookDetailsPage extends StatelessWidget {
             ),
             SizedBox(height: 16.0),
             Text(
-              'Année de publication: $year',
+              year,
               style: TextStyle(fontSize: 18.0),
             ),
             SizedBox(height: 16.0),
             Text(
-              'ISBN: $isbn',
+              isbn,
               style: TextStyle(fontSize: 18.0),
+            ),
+            SizedBox(height: 16.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Code pour ajouter un livre
+                  },
+                  child: Text('Wishlist'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Code pour emprunter un livre
+                  },
+                  child: Text('Emprunter'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Code pour rendre un livre
+                  },
+                  child: Text('Rendre'),
+                ),
+              ],
             ),
           ],
         ),

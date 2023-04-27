@@ -28,4 +28,6 @@ class Book{
       this.isAvailable,
       this.releaseYear,
       this.inWishlist);
+
+  
 }
