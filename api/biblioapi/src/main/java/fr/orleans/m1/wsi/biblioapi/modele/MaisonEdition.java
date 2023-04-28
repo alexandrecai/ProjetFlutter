@@ -1,12 +1,24 @@
 package fr.orleans.m1.wsi.biblioapi.modele;
 
+import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class MaisonEdition {
-
+@Entity
+@Table(name = "maisonedition")
+public class MaisonEdition implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int ID;
+    @Column(name = "nom")
     String name;
+
+    @OneToMany
+    @JoinColumn(name = "auteurs")
     List<Author> authorList;
+    @OneToMany
+    @JoinColumn(name = "livres")
     List<Book> bookList;
 
     public MaisonEdition(int ID, String name, List<Author> authorList, List<Book> bookList) {
@@ -14,6 +26,10 @@ public class MaisonEdition {
         this.name = name;
         this.authorList = authorList;
         this.bookList = bookList;
+    }
+
+    public MaisonEdition() {
+
     }
 
     public int getID() {

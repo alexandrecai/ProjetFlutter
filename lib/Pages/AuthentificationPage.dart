@@ -25,7 +25,9 @@ class AuthentificationState extends State<AuthentificationPage>{
 
   @override
   Widget build(BuildContext context) {
-    var httpservice = HttpService();
+    //var httpservice = HttpService();
+    //var size = httpservice.getAuthorSize();
+    //var res = httpservice.postAuthor(10, "Jil", "Marcel");
   /*
     var controllerSql = SQLiteController();
 
@@ -49,7 +51,7 @@ class AuthentificationState extends State<AuthentificationPage>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FutureBuilder<String>(
-                future: httpservice.getAuthorByID(1),
+                //future: httpservice.deleteAuthorById(6),
                 //initialData: List,
                 builder: (context, snapshot){
                   return snapshot.hasData ? Text(snapshot.data!):

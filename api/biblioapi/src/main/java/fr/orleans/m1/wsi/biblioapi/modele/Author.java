@@ -3,12 +3,19 @@ package fr.orleans.m1.wsi.biblioapi.modele;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "auteur")
-public class Author {
+public class Author implements Serializable {
 
+    @Column(name = "nom")
     private String nom;
+    @Column(name = "prenom")
     private String prenom;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     public Author() {
@@ -40,8 +47,7 @@ public class Author {
         this.id = id;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     public int getId() {
         return id;
     }

@@ -29,5 +29,6 @@ class Book{
       this.releaseYear,
       this.inWishlist);
 
+
   
 }
