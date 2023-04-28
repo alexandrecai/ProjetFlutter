@@ -1,14 +1,10 @@
 package fr.orleans.m1.wsi.biblioapi.modele;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
-@Table(name = "maisonedition")
-public class MaisonEdition {
-
+@Table(name = "auteur")
+public class Auteur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,17 +12,17 @@ public class MaisonEdition {
     @Column(name = "nom")
     private String nom;
 
-    @OneToMany(mappedBy = "maisonEdition")
-    @JsonBackReference
-    private List<Livre> livres;
+    @Column(name = "prenom")
+    private String prenom;
 
-    public MaisonEdition() {}
+    public Auteur() {}
 
-    public MaisonEdition(String nom) {
+    public Auteur(String nom, String prenom) {
         this.nom = nom;
+        this.prenom = prenom;
     }
 
-    // getters and setters
+    // Getters and setters
 
     public Long getId() {
         return id;
@@ -44,11 +40,11 @@ public class MaisonEdition {
         this.nom = nom;
     }
 
-    public List<Livre> getLivres() {
-        return livres;
+    public String getPrenom() {
+        return prenom;
     }
 
-    public void setLivres(List<Livre> livres) {
-        this.livres = livres;
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
 }

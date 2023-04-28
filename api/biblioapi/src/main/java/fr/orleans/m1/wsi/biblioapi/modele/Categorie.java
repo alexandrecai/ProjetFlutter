@@ -2,24 +2,31 @@ package fr.orleans.m1.wsi.biblioapi.modele;
 
 import jakarta.persistence.*;
 
-import java.io.Serializable;
-
 @Entity
 @Table(name = "categorie")
-public class Categorie implements Serializable {
-    @Column(name = "nom")
-    private String nom;
+public class Categorie {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ID;
+    private Long id;
 
-    public Categorie(String nom, int ID) {
+    @Column(name = "nom")
+    private String nom;
+
+    public Categorie() {}
+
+    public Categorie(String nom) {
         this.nom = nom;
-        this.ID = ID;
     }
 
-    public Categorie() {
+    // Getters et setters
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNom() {
@@ -29,12 +36,5 @@ public class Categorie implements Serializable {
     public void setNom(String nom) {
         this.nom = nom;
     }
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
 }
+
