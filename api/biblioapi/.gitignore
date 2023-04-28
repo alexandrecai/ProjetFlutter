@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Config DB Connection ###
+src/main/resources/application.properties
