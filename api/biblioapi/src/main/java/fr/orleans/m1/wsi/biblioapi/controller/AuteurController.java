@@ -1,7 +1,10 @@
 package fr.orleans.m1.wsi.biblioapi.controller;
 
 import fr.orleans.m1.wsi.biblioapi.modele.Auteur;
+import fr.orleans.m1.wsi.biblioapi.modele.Livre;
 import fr.orleans.m1.wsi.biblioapi.service.AuteurService;
+import fr.orleans.m1.wsi.biblioapi.service.LivreService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +16,11 @@ import java.util.List;
 public class AuteurController {
 
     private final AuteurService auteurService;
+    private final LivreService livreService;
 
-    public AuteurController(AuteurService auteurService) {
+    public AuteurController(AuteurService auteurService, LivreService livreService) {
         this.auteurService = auteurService;
+        this.livreService = livreService;
     }
 
     @GetMapping("/")
@@ -54,7 +59,11 @@ public class AuteurController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuteur(@PathVariable Long id) {
-        auteurService.deleteAuteurById(id);
-        return ResponseEntity.noContent().build();
+        List<Livre> livres = livreService.getLivresByAuteurId(id);
+        if (livres.isEmpty()){
+            auteurService.deleteAuteurById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 }

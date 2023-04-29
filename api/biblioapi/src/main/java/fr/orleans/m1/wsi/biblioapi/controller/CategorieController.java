@@ -1,7 +1,9 @@
 package fr.orleans.m1.wsi.biblioapi.controller;
 
 import fr.orleans.m1.wsi.biblioapi.modele.Categorie;
+import fr.orleans.m1.wsi.biblioapi.modele.Livre;
 import fr.orleans.m1.wsi.biblioapi.service.CategorieService;
+import fr.orleans.m1.wsi.biblioapi.service.LivreService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +15,11 @@ import java.util.List;
 public class CategorieController {
 
     private final CategorieService categorieService;
+    private final LivreService livreService;
 
-    public CategorieController(CategorieService categorieService) {
+    public CategorieController(CategorieService categorieService, LivreService livreService) {
         this.categorieService = categorieService;
+        this.livreService = livreService;
     }
 
     @GetMapping("/")
@@ -57,6 +61,12 @@ public class CategorieController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategorie(@PathVariable Long id) {
+        // On modifie la catégorie des livres associés à cette catégorie
+        List<Livre> livres = livreService.getLivresByCategorieId(id);
+        for(Livre l : livres){
+            l.setCategorie(null);
+            livreService.updateLivre(l);
+        }
         categorieService.deleteCategorieById(id);
         return ResponseEntity.noContent().build();
     }

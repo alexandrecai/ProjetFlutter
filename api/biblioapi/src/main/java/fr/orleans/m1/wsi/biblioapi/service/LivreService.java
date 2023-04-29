@@ -41,6 +41,8 @@ public class LivreService {
         return livreRepository.findByAuteur_Id(id);
     }
 
+    public List<Livre> getLivresByMaisonEditionId(Long id) {return livreRepository.findByMaisonEdition_Id(id);}
+
     public List<Livre> getLivresByCategorieId(Long id) {
         return livreRepository.findByCategorie_Id(id);
     }

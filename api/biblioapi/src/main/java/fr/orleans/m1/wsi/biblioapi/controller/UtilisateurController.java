@@ -1,7 +1,9 @@
 package fr.orleans.m1.wsi.biblioapi.controller;
 
 import fr.orleans.m1.wsi.biblioapi.modele.Utilisateur;
+import fr.orleans.m1.wsi.biblioapi.modele.Wishlist;
 import fr.orleans.m1.wsi.biblioapi.service.UtilisateurService;
+import fr.orleans.m1.wsi.biblioapi.service.WishlistService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +15,11 @@ import java.util.List;
 public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;
+    private final WishlistService wishlistService;
 
-    public UtilisateurController(UtilisateurService utilisateurService) {
+    public UtilisateurController(UtilisateurService utilisateurService, WishlistService wishlistService) {
         this.utilisateurService = utilisateurService;
+        this.wishlistService = wishlistService;
     }
 
     @GetMapping("/{id}")
@@ -67,6 +71,11 @@ public class UtilisateurController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUtilisateur(@PathVariable Long id) {
+        // On supprime les wishlists associées à l'utilisateur avant de le supprimer
+        List<Wishlist> wishlists = wishlistService.getWishlistsByUtilisateurId(id);
+        for(Wishlist w : wishlists){
+            wishlistService.deleteWishlistById(w.getId());
+        }
         utilisateurService.deleteUtilisateurById(id);
         return ResponseEntity.noContent().build();
     }

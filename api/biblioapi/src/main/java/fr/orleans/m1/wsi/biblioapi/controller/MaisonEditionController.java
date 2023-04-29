@@ -1,7 +1,10 @@
 package fr.orleans.m1.wsi.biblioapi.controller;
 
+import fr.orleans.m1.wsi.biblioapi.modele.Livre;
 import fr.orleans.m1.wsi.biblioapi.modele.MaisonEdition;
+import fr.orleans.m1.wsi.biblioapi.service.LivreService;
 import fr.orleans.m1.wsi.biblioapi.service.MaisonEditionService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +16,11 @@ import java.util.List;
 public class MaisonEditionController {
 
     private final MaisonEditionService maisonEditionService;
+    private final LivreService livreService;
 
-    public MaisonEditionController(MaisonEditionService maisonEditionService) {
+    public MaisonEditionController(MaisonEditionService maisonEditionService, LivreService livreService) {
         this.maisonEditionService = maisonEditionService;
+        this.livreService = livreService;
     }
 
     @GetMapping("/{id}")
@@ -58,8 +63,12 @@ public class MaisonEditionController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMaisonEdition(@PathVariable Long id) {
-        maisonEditionService.deleteMaisonEditionById(id);
-        return ResponseEntity.noContent().build();
+        List<Livre> livres = livreService.getLivresByMaisonEditionId(id);
+        if (livres.isEmpty()){
+            maisonEditionService.deleteMaisonEditionById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
 }
