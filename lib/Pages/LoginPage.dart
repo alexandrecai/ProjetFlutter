@@ -1,8 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:projetflutter/Objects/User.dart';
 import 'package:projetflutter/Pages/RegisterPage.dart';
 
+import '../Controllers/HttpServiceUser.dart';
+
 class LoginPage extends StatefulWidget{
+
 
   @override
   State<StatefulWidget> createState() => LoginState();
@@ -11,10 +15,11 @@ class LoginPage extends StatefulWidget{
 
 class LoginState extends State<LoginPage> {
 
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
+  var httpserviceuser = HttpServiceUser();
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +90,13 @@ class LoginState extends State<LoginPage> {
                             child: MaterialButton(
                               padding: const EdgeInsets.all(20.0),
                               minWidth: Width>600 ? Width*0.30 : Width*0.5,
-                              onPressed: () {
-                                if (Connect(emailController.text, passwordController.text)) {
-                                  Navigator.pop(context);
+                              onPressed: () async {
+                                if (await Connect(emailController.text, passwordController.text)) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Vous etes connecté')),
+                                  );
+                                  //Navigator.pop(context);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -116,12 +125,15 @@ class LoginState extends State<LoginPage> {
     );
   }
 
-  bool Connect(String name, String password){
-    if(name == "admin" && password == "admin"){
-      return true;
+  Future<bool> Connect(String email, String password) async {
+    List<User> users = await httpserviceuser.getAllUsers();
+    for(User user in users) {
+      if (user.mail == email) {
+        if (user.password == password) {
+          return true;
+        }
+      }
     }
-    else{
-      return false;
-    }
+    return false;
   }
 }

@@ -34,34 +34,6 @@ class AuthentificationState extends State<AuthentificationPage>{
 
   @override
   Widget build(BuildContext context) {
-    var httpserviceauthor = HttpServiceAuthor();
-    var httpservicebook = HttpServiceBook();
-    var httpservicecategorie = HttpServiceCategorie();
-    var httpservicemaison = HttpServiceMaisonEdition();
-    var httpserviceuser = HttpServiceUser();
-    var httpservicewishlist = HttpServiceWishlist();
-    //var size = httpservice.getAuthorSize();
-    //var res = httpserviceauthor.deleteAuthorByID(7);
-    //var testadd = httpserviceauthor.postAuthor("Salut", "Toi");
-    //var testupdate = httpserviceauthor.updateAuthor(10, "bonjour", "update");
-    //httpservicecategorie.postCategorie("flutter");
-    //httpservicecategorie.updateCategorie(6, "testUpdate");
-    //httpservicecategorie.deleteCategorieByID(6);
-    //httpservicemaison.deleteMaisonEditionByID(6);
-  /*
-    var controllerSql = SQLiteController();
-
-    var author = httpservice.getAuthorByID(1);
-
-
-    var author = Author(1,"Etoile","Patrick");
-    var author2 = Author(1,"Eponge","Bob");
-    controllerSql.insertAuteur(author);
-    controllerSql.insertAuteur(author2);
-
-
-     */
-    //var authorlist = controllerSql.getAuthor().;
 
     return Scaffold(
       backgroundColor: Colors.grey,
@@ -70,16 +42,6 @@ class AuthentificationState extends State<AuthentificationPage>{
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FutureBuilder<List<Wishlist>>(
-
-                //future: httpservice.deleteAuthorById(6),
-                future: httpservicewishlist.getAllWishlist(),
-                //initialData: List,
-                builder: (context, snapshot){
-                  return snapshot.hasData ? Text(snapshot.data!.first.utilisateurId.toString()):
-                  const Text("nodata");
-                },
-              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(suggestionText,

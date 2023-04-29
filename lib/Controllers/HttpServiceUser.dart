@@ -53,26 +53,81 @@ class HttpServiceUser {
   }
 
 
-  Future<List<Author>> getAllAuthors() async {
-    Uri request = Uri.http(baseURL,"/auteurs/");
+  Future<List<User>> getAllUsers() async {
+    Uri request = Uri.http(baseURL,"/utilisateurs/");
     final http.Response res = await http.get(request);
     if(res.statusCode == 200){
       var body = jsonDecode(res.body);
-      List<Author> authors = [];
-      for (var author in body) {
-        Author auth = Author(
-          author["id"],
-          author["nom"],
-          author["prenom"],
-        );
-        print(author.toString());
-        authors.add(auth);
+      List<User> users = [];
+      for (var CurrUser in body) {
+        //print("user");
+        List<Book> inWishlist = [];
+        List<Book> livresEmpruntes = [];
+        if(CurrUser['wishlists'] != []) {
+          for (var curwishlist in CurrUser['wishlists']) {
+            //print("la");
+            bool statut = false;
+            if (curwishlist['livre']['statut'] == "LIBRE") {
+              statut = true;
+            }
+            //print(curwishlist['livre']['maisonEdition']['nom']);
+            Book book = Book(
+                curwishlist['livre']['id'],
+                curwishlist['livre']['nom'],
+                curwishlist['livre']['description'],
+                Categorie(curwishlist['livre']['categorie']['id'],
+                    curwishlist['livre']['categorie']['nom']),
+                MaisonEdition(curwishlist['livre']['maisonEdition']['id'],
+                    curwishlist['livre']['maisonEdition']['nom'], [], []),
+                Author(curwishlist['livre']['auteur']['id'],
+                    curwishlist['livre']['auteur']['nom'],
+                    curwishlist['livre']['auteur']['prenom']),
+                curwishlist['livre']['cote'],
+                curwishlist['livre']['isbn'],
+                statut,
+                curwishlist['livre']['anneeParution'],
+                []);
+            inWishlist.add(book);
+            //print(book.name);
+          }
+        }
+        if(CurrUser['livresEmpruntes'] != []) {
+          for (var curEmprunts in CurrUser['livresEmpruntes']) {
+            //print("ici");
+            bool statut = false;
+            if (curEmprunts['statut'] == "LIBRE") {
+              //print("if");
+              statut = true;
+            }
+            //print(curEmprunts['maisonEdition']['nom']);
+            Book book = Book(
+                curEmprunts['id'],
+                curEmprunts['nom'],
+                curEmprunts['description'],
+                Categorie(curEmprunts['categorie']['id'],
+                    curEmprunts['categorie']['nom']),
+                MaisonEdition(curEmprunts['maisonEdition']['id'],
+                    curEmprunts['maisonEdition']['nom'], [], []),
+                Author(curEmprunts['auteur']['id'],
+                    curEmprunts['auteur']['nom'],
+                    curEmprunts['auteur']['prenom']),
+                curEmprunts['cote'],
+                curEmprunts['isbn'],
+                statut,
+                curEmprunts['anneeParution'],
+                []);
+            livresEmpruntes.add(book);
+          }
+        }
+        User user = User(CurrUser['id'],CurrUser['nom'],CurrUser['prenom'],CurrUser['mail'],CurrUser['motDePasse'],CurrUser['admin'],inWishlist,livresEmpruntes);
+        print(user.nom);
+        users.add(user);
       }
-      return authors;
+      return users;
     }
     else{
-      List<Author> authors = [];
-      return authors;
+      List<User> users = [];
+      return users;
     }
   }
 
