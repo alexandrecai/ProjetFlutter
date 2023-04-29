@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:projetflutter/Controllers/HttpService.dart';
-import 'package:projetflutter/Controllers/SQLiteController.dart';
+import 'package:projetflutter/Controllers/HttpServiceAuthor.dart';
+import 'package:projetflutter/Controllers/HttpServiceBook.dart';
+import 'package:projetflutter/Controllers/HttpServiceCategorie.dart';
+import 'package:projetflutter/Controllers/HttpServiceMaisonEdition.dart';
+import 'package:projetflutter/Controllers/HttpServiceUser.dart';
+import 'package:projetflutter/Controllers/HttpServiceWishlist.dart';
+import 'package:projetflutter/Objects/Categorie.dart';
+import 'package:projetflutter/Objects/MaisonEdition.dart';
+import 'package:projetflutter/Objects/Wishlist.dart';
 
 import '../Objects/Author.dart';
+import '../Objects/Book.dart';
+import '../Objects/User.dart';
 import 'LoginPage.dart';
 import 'RegisterPage.dart';
 
@@ -25,9 +34,20 @@ class AuthentificationState extends State<AuthentificationPage>{
 
   @override
   Widget build(BuildContext context) {
-    //var httpservice = HttpService();
+    var httpserviceauthor = HttpServiceAuthor();
+    var httpservicebook = HttpServiceBook();
+    var httpservicecategorie = HttpServiceCategorie();
+    var httpservicemaison = HttpServiceMaisonEdition();
+    var httpserviceuser = HttpServiceUser();
+    var httpservicewishlist = HttpServiceWishlist();
     //var size = httpservice.getAuthorSize();
-    //var res = httpservice.postAuthor(10, "Jil", "Marcel");
+    //var res = httpserviceauthor.deleteAuthorByID(7);
+    //var testadd = httpserviceauthor.postAuthor("Salut", "Toi");
+    //var testupdate = httpserviceauthor.updateAuthor(10, "bonjour", "update");
+    //httpservicecategorie.postCategorie("flutter");
+    //httpservicecategorie.updateCategorie(6, "testUpdate");
+    //httpservicecategorie.deleteCategorieByID(6);
+    //httpservicemaison.deleteMaisonEditionByID(6);
   /*
     var controllerSql = SQLiteController();
 
@@ -50,15 +70,13 @@ class AuthentificationState extends State<AuthentificationPage>{
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FutureBuilder<String>(
-<<<<<<< HEAD
+              FutureBuilder<List<Wishlist>>(
+
                 //future: httpservice.deleteAuthorById(6),
-=======
-                future: httpservice.deleteAuthorByID(6),
->>>>>>> 37cd5f772ea71637cf6a64612d29982ea39df7f5
+                future: httpservicewishlist.getAllWishlist(),
                 //initialData: List,
                 builder: (context, snapshot){
-                  return snapshot.hasData ? Text(snapshot.data!):
+                  return snapshot.hasData ? Text(snapshot.data!.first.utilisateurId.toString()):
                   const Text("nodata");
                 },
               ),
