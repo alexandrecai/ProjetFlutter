@@ -131,6 +131,7 @@ class HttpServiceUser {
     }
   }
 
+  // à modifier
   Future<http.Response> postAuthor(String nom,String prenom) async {
     //String stringRequest = baseURL+"/auteurs/?nom="+nom+"&prenom="+prenom+"&id="+ id.toString();
     Map<String,dynamic> bodyMap = Map();
@@ -146,6 +147,7 @@ class HttpServiceUser {
     return res;
   }
 
+  // à modifier
   Future<http.Response> updateAuthor(int id,String nom,String prenom) async {
     Map<String,dynamic> bodyMap = Map();
     bodyMap.putIfAbsent("nom", () => nom);
@@ -160,30 +162,24 @@ class HttpServiceUser {
     return res;
   }
 
-  Future<int> getAuthorSize() async{
-    Uri request = Uri.http(baseURL,"/auteurs/");
+  Future<int> getUserSize() async{
+    Uri request = Uri.http(baseURL,"/utilisateurs/");
     final http.Response res = await http.get(request);
     if(res.statusCode == 200){
       var body = jsonDecode(res.body);
-      List<Author> authors = [];
-      for (var author in body) {
-        Author auth = Author(
-          author["id"],
-          author["nom"],
-          author["prenom"],
-        );
-        print(author.toString());
-        authors.add(auth);
+      int cpt = 0;
+      for (var user in body) {
+        cpt++;
       }
-      return authors.length;
+      return cpt;
     }
     else{
       return 0;
     }
   }
 
-  Future<String> deleteAuthorByID(int id) async{
-    Uri request = Uri.http(baseURL,"/auteurs/"+id.toString());
+  Future<String> deleteUserByID(int id) async{
+    Uri request = Uri.http(baseURL,"/utilisateurs/"+id.toString());
     final http.Response res = await http.delete(request);
     if(res.statusCode == 204){
       return res.statusCode.toString();

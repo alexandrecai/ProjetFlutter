@@ -91,11 +91,15 @@ class HttpServiceBook {
   }
 
   Future<int> getBookSize() async{
-    Uri request = Uri.http(baseURL,"/maisoneditions/size");
+    Uri request = Uri.http(baseURL,"/livres/");
     final http.Response res = await http.get(request);
     if(res.statusCode == 200){
-      var size = jsonDecode(res.body);
-      return size;
+      var body = jsonDecode(res.body);
+      int cpt = 0;
+      for (var book in body) {
+        cpt++;
+      }
+      return cpt;
     }
     else{
       return 0;
@@ -104,7 +108,7 @@ class HttpServiceBook {
 
 
   Future<String> deleteBookByID(int id) async{
-    Uri request = Uri.http(baseURL,"/maisoneditions/"+id.toString());
+    Uri request = Uri.http(baseURL,"/livres/"+id.toString());
     final http.Response res = await http.delete(request);
     if(res.statusCode == 204){
       return res.statusCode.toString();

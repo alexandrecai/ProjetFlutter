@@ -108,6 +108,10 @@ class HttpServiceMaisonEdition {
     if(res.statusCode == 204){
       return res.statusCode.toString();
     }
+    else if(res.statusCode == 409){
+      // Conflit - la maison d'édtion est liée à au moins un livre
+      return res.statusCode.toString();
+    }
     else{
       return res.statusCode.toString();
     }

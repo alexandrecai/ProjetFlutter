@@ -34,6 +34,64 @@ class HttpServiceWishlist {
     }
   }
 
+  Future<Wishlist> getWishlistById(int userId, int bookId) async {
+    Uri request = Uri.http(baseURL,"/wishlists/" + userId.toString() + "/" + bookId.toString());
+    final http.Response response = await http.get(request);
+    if(response.statusCode == 200) {
+      final _wishlist = jsonDecode(response.body);
+      Wishlist wishlist = Wishlist(_wishlist["id"]["utilisateurId"], _wishlist["id"]["livreId"]);
+      return wishlist;
+    }
+    else {
+      return Wishlist(0, 0);
+    }
+  }
+
+  Future<List<Wishlist>> getWishlistsByUserId(int userId) async {
+    Uri request = Uri.http(baseURL, "/wishlists/utilisateur/" + userId.toString());
+    final http.Response response = await http.get(request);
+    if(response.statusCode == 200){
+      var body = jsonDecode(response.body);
+      List<Wishlist> wishlists = [];
+      for (var wishlist in body) {
+        Wishlist wish = Wishlist(
+            wishlist["id"]["utilisateurId"],
+            wishlist["id"]["livreId"]
+        );
+        print(wishlist.toString());
+        wishlists.add(wish);
+      }
+      return wishlists;
+    }
+    else{
+      List<Wishlist> wishlists = [];
+      return wishlists;
+    }
+  }
+
+  Future<List<Wishlist>> getWishlistsByBookId(int bookId) async {
+    Uri request = Uri.http(baseURL, "/wishlists/livre/" + bookId.toString());
+    final http.Response response = await http.get(request);
+    if(response.statusCode == 200){
+      var body = jsonDecode(response.body);
+      List<Wishlist> wishlists = [];
+      for (var wishlist in body) {
+        Wishlist wish = Wishlist(
+            wishlist["id"]["utilisateurId"],
+            wishlist["id"]["livreId"]
+        );
+        print(wishlist.toString());
+        wishlists.add(wish);
+      }
+      return wishlists;
+    }
+    else{
+      List<Wishlist> wishlists = [];
+      return wishlists;
+    }
+  }
+
+  // à modifier
   Future<http.Response> postAuthor(String nom,String prenom) async {
     //String stringRequest = baseURL+"/auteurs/?nom="+nom+"&prenom="+prenom+"&id="+ id.toString();
     Map<String,dynamic> bodyMap = Map();
@@ -49,6 +107,7 @@ class HttpServiceWishlist {
     return res;
   }
 
+  // à modifier
   Future<http.Response> updateAuthor(int id,String nom,String prenom) async {
     Map<String,dynamic> bodyMap = Map();
     bodyMap.putIfAbsent("nom", () => nom);
@@ -65,30 +124,24 @@ class HttpServiceWishlist {
 
 
 
-  Future<int> getAuthorSize() async{
-    Uri request = Uri.http(baseURL,"/auteurs/");
+  Future<int> getWishlistSize() async{
+    Uri request = Uri.http(baseURL,"/wishlists/");
     final http.Response res = await http.get(request);
     if(res.statusCode == 200){
       var body = jsonDecode(res.body);
-      List<Author> authors = [];
-      for (var author in body) {
-        Author auth = Author(
-          author["id"],
-          author["nom"],
-          author["prenom"],
-        );
-        print(author.toString());
-        authors.add(auth);
+      int cpt = 0;
+      for (var wishlist in body) {
+        cpt++;
       }
-      return authors.length;
+      return cpt;
     }
     else{
       return 0;
     }
   }
 
-  Future<String> deleteAuthorByID(int id) async{
-    Uri request = Uri.http(baseURL,"/auteurs/"+id.toString());
+  Future<String> deleteWishlistByID(int id) async{
+    Uri request = Uri.http(baseURL,"/wishlists/"+id.toString());
     final http.Response res = await http.delete(request);
     if(res.statusCode == 204){
       return res.statusCode.toString();
