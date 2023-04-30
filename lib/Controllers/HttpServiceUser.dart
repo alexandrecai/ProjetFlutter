@@ -36,11 +36,11 @@ class HttpServiceUser {
       for(var curEmprunts in obj['livresEmpruntes']){
         print("la");
         bool statut = false;
-        if(curEmprunts['livre']['statut'] == "LIBRE"){
+        if(curEmprunts['statut'] == "LIBRE"){
           statut = true;
         }
-        print(curEmprunts['livre']['maisonEdition']['nom']);
-        Book book = Book(curEmprunts['livre']['id'], curEmprunts['livre']['nom'], curEmprunts['livre']['description'], Categorie(curEmprunts['livre']['categorie']['id'],curEmprunts['livre']['categorie']['nom']), MaisonEdition(curEmprunts['livre']['maisonEdition']['id'],curEmprunts['livre']['maisonEdition']['nom'],[],[]), Author(curEmprunts['livre']['auteur']['id'],curEmprunts['livre']['auteur']['nom'],curEmprunts['livre']['auteur']['prenom']), curEmprunts['livre']['cote'], curEmprunts['livre']['isbn'], statut, curEmprunts['livre']['anneeParution'], []);
+        print(curEmprunts['maisonEdition']['nom']);
+        Book book = Book(curEmprunts['id'], curEmprunts['nom'], curEmprunts['description'], Categorie(curEmprunts['categorie']['id'],curEmprunts['categorie']['nom']), MaisonEdition(curEmprunts['maisonEdition']['id'],curEmprunts['maisonEdition']['nom'],[],[]), Author(curEmprunts['auteur']['id'],curEmprunts['auteur']['nom'],curEmprunts['auteur']['prenom']), curEmprunts['cote'], curEmprunts['isbn'], statut, curEmprunts['anneeParution'], []);
         livresEmpruntes.add(book);
       }
       User user = User(obj['id'],obj['nom'],obj['prenom'],obj['mail'],obj['motDePasse'],obj['admin'],inWishlist,livresEmpruntes);
@@ -131,33 +131,48 @@ class HttpServiceUser {
     }
   }
 
-  // à modifier
-  Future<http.Response> postAuthor(String nom,String prenom) async {
-    //String stringRequest = baseURL+"/auteurs/?nom="+nom+"&prenom="+prenom+"&id="+ id.toString();
-    Map<String,dynamic> bodyMap = Map();
-    bodyMap.putIfAbsent("nom", () => nom);
-    bodyMap.putIfAbsent("prenom", () => prenom);
+  Future<http.Response> postUser(String nom, String prenom, String mail, String pswd, bool isAdmin) async {
+    Map<String,dynamic> bodyMap = {
+      'nom': nom,
+      'prenom': prenom,
+      'mail': mail,
+      'mot_de_passe': pswd,
+      'is_admin': isAdmin,
+    };
     final body = jsonEncode(bodyMap);
-    Uri request = Uri.http(baseURL,"/auteurs/");
     print(body.toString());
-    final http.Response res = await http.post(request,headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },body: body);
+    Uri request = Uri.http(baseURL,"/utilisateurs/");
+    final http.Response res = await http.post(
+        request,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: body
+    );
     print(res.statusCode);
     return res;
   }
 
-  // à modifier
-  Future<http.Response> updateAuthor(int id,String nom,String prenom) async {
-    Map<String,dynamic> bodyMap = Map();
-    bodyMap.putIfAbsent("nom", () => nom);
-    bodyMap.putIfAbsent("prenom", () => prenom);
+  Future<http.Response> updateUser(int id,String nom, String prenom, String mail, String pswd, bool isAdmin) async {
+    Map<String,dynamic> bodyMap = {
+      'nom': nom,
+      'prenom': prenom,
+      'mail': mail,
+      'mot_de_passe': pswd,
+      'is_admin': isAdmin,
+    };
     final body = jsonEncode(bodyMap);
-    Uri request = Uri.http(baseURL,"/auteurs/"+id.toString());
+    Uri request = Uri.http(baseURL,"/utilisateurs/"+id.toString());
     print(body.toString());
-    final http.Response res = await http.put(request,headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },body: body);
+    final http.Response res = await http.put(
+        request,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: body
+    );
     print(res.statusCode);
     return res;
   }

@@ -1,8 +1,6 @@
 package fr.orleans.m1.wsi.biblioapi.modele;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,8 +15,8 @@ public class Utilisateur {
     private String nom;
     private String prenom;
     private String mail;
-    private String motDePasse;
-    private Boolean isAdmin;
+    private String mot_de_passe;
+    private Boolean is_admin;
 
     @OneToMany(mappedBy = "empruntePar")
     @JsonManagedReference
@@ -29,12 +27,12 @@ public class Utilisateur {
 
     public Utilisateur() {}
 
-    public Utilisateur(String nom, String prenom, String mail, String motDePasse, Boolean isAdmin) {
+    public Utilisateur(String nom, String prenom, String mail, String mot_de_passe, Boolean is_admin) {
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
-        this.motDePasse = motDePasse;
-        this.isAdmin = isAdmin;
+        this.mot_de_passe = mot_de_passe;
+        this.is_admin = is_admin;
     }
 
     // getters and setters
@@ -73,19 +71,19 @@ public class Utilisateur {
     }
 
     public String getMotDePasse() {
-        return motDePasse;
+        return mot_de_passe;
     }
 
     public void setMotDePasse(String motDePasse) {
-        this.motDePasse = motDePasse;
+        this.mot_de_passe = motDePasse;
     }
 
     public Boolean getAdmin() {
-        return isAdmin;
+        return is_admin;
     }
 
     public void setAdmin(Boolean admin) {
-        isAdmin = admin;
+        is_admin = admin;
     }
 
     public List<Livre> getLivresEmpruntes() {

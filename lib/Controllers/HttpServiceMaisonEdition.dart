@@ -41,7 +41,6 @@ class HttpServiceMaisonEdition {
   }
 
   Future<http.Response> updateMaisonEdition(int id,String nom) async {
-    //String stringRequest = baseURL+"/auteurs/?nom="+nom+"&prenom="+prenom+"&id="+ id.toString();
     Map<String,dynamic> bodyMap = Map();
     bodyMap.putIfAbsent("nom", () => nom);
     final body = jsonEncode(bodyMap);
