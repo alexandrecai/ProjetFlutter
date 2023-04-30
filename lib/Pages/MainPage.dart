@@ -3,6 +3,7 @@ import 'package:projetflutter/Pages/AuthentificationPage.dart';
 import 'package:projetflutter/Pages/BookCreationPage.dart';
 import 'package:projetflutter/Pages/BookListPage.dart';
 import 'package:projetflutter/Pages/LoginPage.dart';
+import 'package:projetflutter/Pages/ProfilePage.dart';
 import 'package:projetflutter/Pages/RegisterPage.dart';
 import 'package:projetflutter/Pages/UserBookBorrowedPage.dart';
 import 'package:projetflutter/Pages/WishlistPage.dart';
@@ -21,11 +22,13 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage>{
 
+
   bool isConnected;
   User currentUser;
   MainPageState(this.isConnected,this.currentUser);
 
   int selectedIndex = 0;
+
 
   List<Widget> setPages(){
     if(isConnected){
@@ -34,6 +37,7 @@ class MainPageState extends State<MainPage>{
           BookListPage(),
           WishlistPage(currentUser),
           UserBookBorrowedPage(currentUser),
+          ProfilePage(currentUser),
           BookCreationPage(),
         ];
       }
@@ -41,6 +45,7 @@ class MainPageState extends State<MainPage>{
         BookListPage(),
         WishlistPage(currentUser),
         UserBookBorrowedPage(currentUser),
+        ProfilePage(currentUser),
       ];
     }
     return [
@@ -62,6 +67,7 @@ class MainPageState extends State<MainPage>{
           BottomNavigationBarItem(icon: Icon(Icons.library_books),label: "Bibliothèque"),
           BottomNavigationBarItem(icon: Icon(Icons.favorite),label: "Wishlist"),
           BottomNavigationBarItem(icon: Icon(Icons.bookmark),label: "Mes livres empruntés"),
+          BottomNavigationBarItem(icon: Icon(Icons.person),label: "Profil"),
           BottomNavigationBarItem(icon: Icon(Icons.book),label: "Ajoute un livre"),
 
         ],
@@ -78,13 +84,18 @@ class MainPageState extends State<MainPage>{
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.library_books),label: "Bibliothèque"),
         BottomNavigationBarItem(icon: Icon(Icons.favorite),label: "Wishlist"),
-        BottomNavigationBarItem(icon: Icon(Icons.bookmark),label: "Mes livres empruntés"),]
+        BottomNavigationBarItem(icon: Icon(Icons.bookmark),label: "Mes livres empruntés"),
+        BottomNavigationBarItem(icon: Icon(Icons.person),label: "Profil"),]
     );
   }
 
 
 
   NavigationRail setNavigationBar(){
+
+    var Width = MediaQuery.of(context).size.width;
+    var Height = MediaQuery.of(context).size.height;
+
     if(currentUser.isAdmin){
       return NavigationRail(
         onDestinationSelected: (int index) {
@@ -92,15 +103,20 @@ class MainPageState extends State<MainPage>{
             selectedIndex = index;
           });
         },
-        selectedIndex: selectedIndex, destinations: const [
+        groupAlignment: BorderSide.strokeAlignCenter,
+        minWidth: Width*0.05,
+        selectedIndex: selectedIndex, destinations: [
         NavigationRailDestination(
-            icon: Icon(Icons.library_books), label: Text('Bibliothèque')),
+            icon: Icon(Icons.library_books,size: Height>600 ? Height*0.05 : Height*0.1 ), label: const Text('Bibliothèque'),padding: EdgeInsetsDirectional.all(8)),
         NavigationRailDestination(
-            icon: Icon(Icons.favorite), label: Text('Wishlist')),
+            icon: Icon(Icons.favorite,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Wishlist'), padding: EdgeInsetsDirectional.all(8)),
         NavigationRailDestination(
-            icon: Icon(Icons.bookmark), label: Text('Mes livres empruntés')),
+            icon: Icon(Icons.bookmark,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Mes livres empruntés'), padding: EdgeInsetsDirectional.all(8)),
+          NavigationRailDestination(
+              icon: Icon(Icons.person,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Profil'), padding: EdgeInsetsDirectional.all(8)),
         NavigationRailDestination(
-            icon: Icon(Icons.book), label: Text('Ajoute un livre')),],
+            icon: Icon(Icons.book,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Ajoute un livre'), padding: EdgeInsetsDirectional.all(8)),
+        ],
         labelType: NavigationRailLabelType.all,
         selectedLabelTextStyle: const TextStyle(
           color: Colors.indigoAccent,
@@ -113,31 +129,42 @@ class MainPageState extends State<MainPage>{
           ],
         ),);
     }
+
     return NavigationRail(
+
+
       onDestinationSelected: (int index) {
         setState(() {
           selectedIndex = index;
         });
       },
-      selectedIndex: selectedIndex, destinations: const [
+      groupAlignment: BorderSide.strokeAlignCenter,
+      minWidth: Width*0.05,
+      selectedIndex: selectedIndex, destinations: [
       NavigationRailDestination(
-          icon: Icon(Icons.library_books), label: Text('Bibliothèque')),
+          icon: Icon(Icons.library_books,size: Height>600 ? Height*0.05 : Height*0.1 ), label: const Text('Bibliothèque'),padding: EdgeInsetsDirectional.all(8)),
       NavigationRailDestination(
-          icon: Icon(Icons.favorite), label: Text('Wishlist')),
+          icon: Icon(Icons.favorite,size: Height>600 ? Height*0.05 : Height*0.1 ), label: const Text('Wishlist'),padding: EdgeInsetsDirectional.all(8)),
       NavigationRailDestination(
-          icon: Icon(Icons.bookmark), label: Text('Mes livres empruntés')),
+          icon: Icon(Icons.bookmark,size: Height>600 ? Height*0.05 : Height*0.1 ), label: const Text('Mes livres empruntés'),padding: EdgeInsetsDirectional.all(8)),
+      NavigationRailDestination(
+          icon: Icon(Icons.person,size: Height>600 ? Height*0.05 : Height*0.1 ), label: const Text('Profil'),padding: EdgeInsetsDirectional.all(8)),
       ],
       labelType: NavigationRailLabelType.all,
       selectedLabelTextStyle: const TextStyle(
         color: Colors.indigoAccent,
       ),
+
       leading: Column(
         children: const [
           SizedBox(
             height: 10,
           ),
         ],
-      ),);
+      )
+
+      );
+
   }
 
 
