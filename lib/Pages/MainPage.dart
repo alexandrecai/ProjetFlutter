@@ -4,6 +4,7 @@ import 'package:projetflutter/Pages/BookCreationPage.dart';
 import 'package:projetflutter/Pages/BookListPage.dart';
 import 'package:projetflutter/Pages/LoginPage.dart';
 import 'package:projetflutter/Pages/RegisterPage.dart';
+import 'package:projetflutter/Pages/UserBookBorrowedPage.dart';
 import 'package:projetflutter/Pages/WishlistPage.dart';
 
 import '../Objects/User.dart';
@@ -31,13 +32,15 @@ class MainPageState extends State<MainPage>{
       if(currentUser.isAdmin){
         return [
           BookListPage(),
-          FavoritesPage(),
+          WishlistPage(currentUser),
+          UserBookBorrowedPage(currentUser),
           BookCreationPage(),
         ];
       }
       return [
         BookListPage(),
-        FavoritesPage(),
+        WishlistPage(currentUser),
+        UserBookBorrowedPage(currentUser),
       ];
     }
     return [
@@ -57,7 +60,8 @@ class MainPageState extends State<MainPage>{
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.library_books),label: "Bibliothèque"),
-          BottomNavigationBarItem(icon: Icon(Icons.star),label: "Wishlist"),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite),label: "Wishlist"),
+          BottomNavigationBarItem(icon: Icon(Icons.bookmark),label: "Mes livres empruntés"),
           BottomNavigationBarItem(icon: Icon(Icons.book),label: "Ajoute un livre"),
 
         ],
@@ -72,8 +76,9 @@ class MainPageState extends State<MainPage>{
         });
       },
       items: const [
-      BottomNavigationBarItem(icon: Icon(Icons.library_books),label: "Bibliothèque"),
-      BottomNavigationBarItem(icon: Icon(Icons.star),label: "Wishlist"),]
+        BottomNavigationBarItem(icon: Icon(Icons.library_books),label: "Bibliothèque"),
+        BottomNavigationBarItem(icon: Icon(Icons.favorite),label: "Wishlist"),
+        BottomNavigationBarItem(icon: Icon(Icons.bookmark),label: "Mes livres empruntés"),]
     );
   }
 
@@ -91,7 +96,9 @@ class MainPageState extends State<MainPage>{
         NavigationRailDestination(
             icon: Icon(Icons.library_books), label: Text('Bibliothèque')),
         NavigationRailDestination(
-            icon: Icon(Icons.star), label: Text('Wishlist')),
+            icon: Icon(Icons.favorite), label: Text('Wishlist')),
+        NavigationRailDestination(
+            icon: Icon(Icons.bookmark), label: Text('Mes livres empruntés')),
         NavigationRailDestination(
             icon: Icon(Icons.book), label: Text('Ajoute un livre')),],
         labelType: NavigationRailLabelType.all,
@@ -116,7 +123,9 @@ class MainPageState extends State<MainPage>{
       NavigationRailDestination(
           icon: Icon(Icons.library_books), label: Text('Bibliothèque')),
       NavigationRailDestination(
-          icon: Icon(Icons.star), label: Text('Wishlist')),
+          icon: Icon(Icons.favorite), label: Text('Wishlist')),
+      NavigationRailDestination(
+          icon: Icon(Icons.bookmark), label: Text('Mes livres empruntés')),
       ],
       labelType: NavigationRailLabelType.all,
       selectedLabelTextStyle: const TextStyle(

@@ -1,34 +1,75 @@
 import 'package:flutter/material.dart';
 
-class FavoritesPage extends StatelessWidget {
+import '../Controllers/HttpServiceUser.dart';
+import '../Objects/Book.dart';
+import '../Objects/User.dart';
+import 'BookDetailsPage.dart';
+
+class WishlistPage extends StatefulWidget {
+
+  User currentUser;
+
+  WishlistPage(this.currentUser,{super.key});
+
   @override
-  Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.favorite,
-                    color:Colors.deepOrange,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                      'Favorites',
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontSize:  25,
-                          fontWeight: FontWeight.bold
-                      )
-                  )
-                ],
-              ),
-              Expanded(
-                child: Container(),
-              )
-            ]
-        )
-    );
-  }
+  State<WishlistPage> createState() => _WishlistState(currentUser);
 }
+
+class _WishlistState extends State<WishlistPage> {
+
+  User currentUser;
+
+  _WishlistState(this.currentUser);
+
+  HttpServiceUser httpServiceUser = HttpServiceUser();
+  List<Book> books = [];
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: const Center(child: Text("Wishlist", textAlign: TextAlign.center)),
+    ),
+    body: FutureBuilder<User>(
+        future: httpServiceUser.getUserByID(currentUser.ID),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            print("hasData");
+            books = snapshot.data!.wishlist;
+            if (books.isNotEmpty) {
+              return ListView.builder(
+                  itemCount: books.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: const Icon(Icons.book),
+                      title: Text(books[index].name),
+                      subtitle: Text(books[index].description),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                BookDetailsPage(
+                                  title: books[index].name,
+                                  author: books[index].author.nom,
+                                  description: books[index].description,
+                                  year: books[index].releaseYear.toString(),
+                                  isbn: books[index].ISBN,
+                                ),
+                          ),
+                        );
+                      },
+                    );
+                  } );
+            }
+            else {
+              return const Center(child: Text("Vous n'avez aucun livre dans votre wishlist"));
+            }
+          } else {
+            return const Center(
+                child: Text('Erreur lors du chargement des données'));
+          }
+        }),
+  );
+
+}
+
