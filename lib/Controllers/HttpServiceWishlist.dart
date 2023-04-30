@@ -91,33 +91,44 @@ class HttpServiceWishlist {
     }
   }
 
-  // à modifier
-  Future<http.Response> postAuthor(String nom,String prenom) async {
-    //String stringRequest = baseURL+"/auteurs/?nom="+nom+"&prenom="+prenom+"&id="+ id.toString();
-    Map<String,dynamic> bodyMap = Map();
-    bodyMap.putIfAbsent("nom", () => nom);
-    bodyMap.putIfAbsent("prenom", () => prenom);
+
+  Future<http.Response> postWishlist(int utilisateurId, int livreId) async {
+    Map<String,dynamic> bodyMap = {
+      "utilisateur_id" : utilisateurId,
+      "livre_id" : livreId
+    };
     final body = jsonEncode(bodyMap);
-    Uri request = Uri.http(baseURL,"/auteurs/");
+    Uri request = Uri.http(baseURL,"/wishlists/");
     print(body.toString());
-    final http.Response res = await http.post(request,headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },body: body);
+    final http.Response res = await http.post(
+        request,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: body
+    );
     print(res.statusCode);
     return res;
   }
 
   // à modifier
-  Future<http.Response> updateAuthor(int id,String nom,String prenom) async {
-    Map<String,dynamic> bodyMap = Map();
-    bodyMap.putIfAbsent("nom", () => nom);
-    bodyMap.putIfAbsent("prenom", () => prenom);
+  Future<http.Response> updateWishlist(int utilisateurId, int livreId, int newUtilisateurId, int newLivreId) async {
+    Map<String,dynamic> bodyMap = {
+      "utilisateur_id" : newUtilisateurId,
+      "livre_id" : newLivreId
+    };
     final body = jsonEncode(bodyMap);
-    Uri request = Uri.http(baseURL,"/auteurs/"+id.toString());
+    Uri request = Uri.http(baseURL,"/wishlists/"+utilisateurId.toString()+"/"+livreId.toString());
     print(body.toString());
-    final http.Response res = await http.put(request,headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },body: body);
+    final http.Response res = await http.put(
+        request,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: body
+    );
     print(res.statusCode);
     return res;
   }

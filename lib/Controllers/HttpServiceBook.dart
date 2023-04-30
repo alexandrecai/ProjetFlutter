@@ -35,33 +35,58 @@ class HttpServiceBook {
     }
   }
 
-  // à modifier
-  Future<http.Response> postBook(String nom,String description,Categorie categorie,MaisonEdition maisonEdition,Author author,String cote,String ISBN,int annee,bool statut,List<User> utilisateurs) async {
-    //String stringRequest = baseURL+"/auteurs/?nom="+nom+"&prenom="+prenom+"&id="+ id.toString();
-    Map<String,dynamic> bodyMap = Map();
-    bodyMap.putIfAbsent("nom", () => nom);
-    bodyMap.putIfAbsent("description", () => description);
+  Future<http.Response> postBook(String nom,String description,Categorie categorie,MaisonEdition maisonEdition,Author author,String cote,String ISBN,int annee,bool statut) async {
+    Map<String,dynamic> bodyMap = {
+      'nom': nom,
+      'description': description,
+      'categorie': categorie.ID,
+      'maison_edition': maisonEdition.ID,
+      'auteur': author.ID,
+      'cote': cote,
+      'ISBN': ISBN,
+      'annee': annee,
+      'statut': statut
+    };
     final body = jsonEncode(bodyMap);
-    Uri request = Uri.http(baseURL,"/auteurs/");
+    Uri request = Uri.http(baseURL,"/livres/");
     print(body.toString());
-    final http.Response res = await http.post(request,headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },body: body);
+    final http.Response res = await http.post(
+        request,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: body
+    );
     print(res.statusCode);
     return res;
   }
 
-  // à modifier
-  Future<http.Response> updateBook(int id,String nom) async {
-    //String stringRequest = baseURL+"/auteurs/?nom="+nom+"&prenom="+prenom+"&id="+ id.toString();
-    Map<String,Object> parameters = Map();
-    parameters.putIfAbsent("id", () => id.toString());
-    parameters.putIfAbsent("nom", () => nom);
-    Uri request = Uri.http(baseURL,"/maisoneditions/",parameters);
+
+  Future<http.Response> updateBook(int id,String nom,String description,Categorie categorie,MaisonEdition maisonEdition,Author author,String cote,String ISBN,int annee,bool statut, int idUserEmprunt) async {
+    Map<String,Object> bodyMap = {
+      'nom': nom,
+      'description': description,
+      'categorie': categorie.ID,
+      'maison_edition': maisonEdition.ID,
+      'auteur': author.ID,
+      'cote': cote,
+      'ISBN': ISBN,
+      'annee': annee,
+      'statut': statut,
+      'emprunte_par' : idUserEmprunt
+    };
+    final body = jsonEncode(bodyMap);
+    Uri request = Uri.http(baseURL,"/livres/"+id.toString());
     print(request.toString());
-    final http.Response res = await http.put(request,headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
+    final http.Response res = await http.put(
+        request,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: body
+    );
     print(res.statusCode);
     return res;
   }
