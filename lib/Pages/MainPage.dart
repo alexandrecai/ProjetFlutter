@@ -6,30 +6,48 @@ import 'package:projetflutter/Pages/LoginPage.dart';
 import 'package:projetflutter/Pages/RegisterPage.dart';
 import 'package:projetflutter/Pages/WishlistPage.dart';
 
+import '../Objects/User.dart';
+
 class MainPage extends StatefulWidget {
 
+  bool isConnected;
+  User currentUser;
+  MainPage(this.isConnected,this.currentUser);
+
   @override
-  State<StatefulWidget> createState() => MainPageState();
+  State<StatefulWidget> createState() => MainPageState(isConnected,currentUser);
 }
 
 class MainPageState extends State<MainPage>{
 
+  bool isConnected;
+  User currentUser;
+  MainPageState(this.isConnected,this.currentUser);
+
   int selectedIndex = 0;
 
-  final List<Widget> pages = [
-    AuthentificationPage(),
-    BookCreationPage(),
-    BookListPage(),
-    FavoritesPage(),
+  List<Widget> setPages(){
+    if(isConnected){
+      if(currentUser.isAdmin){
+        return [
+          BookListPage(),
+          FavoritesPage(),
+          BookCreationPage(),
+        ];
+      }
+      return [
+        BookListPage(),
+        FavoritesPage(),
+      ];
+    }
+    return [
+      AuthentificationPage()
+    ];
+  }
 
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      bottomNavigationBar: MediaQuery.of(context).size.width < 600?
-      BottomNavigationBar(
+  BottomNavigationBar setBottomBar(){
+    if(currentUser.isAdmin){
+      return BottomNavigationBar(
         currentIndex: selectedIndex,
         type: BottomNavigationBarType.fixed,
         onTap: (int index){
@@ -38,17 +56,92 @@ class MainPageState extends State<MainPage>{
           });
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.person),label: "Connexion"),
-          BottomNavigationBarItem(icon: Icon(Icons.book),label: "Ajoute un livre"),
           BottomNavigationBarItem(icon: Icon(Icons.library_books),label: "Bibliothèque"),
           BottomNavigationBarItem(icon: Icon(Icons.star),label: "Wishlist"),
+          BottomNavigationBarItem(icon: Icon(Icons.book),label: "Ajoute un livre"),
 
         ],
-      ):null,
+      );
+    }
+    return BottomNavigationBar(
+      currentIndex: selectedIndex,
+      type: BottomNavigationBarType.fixed,
+      onTap: (int index){
+        setState((){
+          selectedIndex = index;
+        });
+      },
+      items: const [
+      BottomNavigationBarItem(icon: Icon(Icons.library_books),label: "Bibliothèque"),
+      BottomNavigationBarItem(icon: Icon(Icons.star),label: "Wishlist"),]
+    );
+  }
+
+
+
+  NavigationRail setNavigationBar(){
+    if(currentUser.isAdmin){
+      return NavigationRail(
+        onDestinationSelected: (int index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
+        selectedIndex: selectedIndex, destinations: const [
+        NavigationRailDestination(
+            icon: Icon(Icons.library_books), label: Text('Bibliothèque')),
+        NavigationRailDestination(
+            icon: Icon(Icons.star), label: Text('Wishlist')),
+        NavigationRailDestination(
+            icon: Icon(Icons.book), label: Text('Ajoute un livre')),],
+        labelType: NavigationRailLabelType.all,
+        selectedLabelTextStyle: const TextStyle(
+          color: Colors.indigoAccent,
+        ),
+        leading: Column(
+          children: const [
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        ),);
+    }
+    return NavigationRail(
+      onDestinationSelected: (int index) {
+        setState(() {
+          selectedIndex = index;
+        });
+      },
+      selectedIndex: selectedIndex, destinations: const [
+      NavigationRailDestination(
+          icon: Icon(Icons.library_books), label: Text('Bibliothèque')),
+      NavigationRailDestination(
+          icon: Icon(Icons.star), label: Text('Wishlist')),
+      ],
+      labelType: NavigationRailLabelType.all,
+      selectedLabelTextStyle: const TextStyle(
+        color: Colors.indigoAccent,
+      ),
+      leading: Column(
+        children: const [
+          SizedBox(
+            height: 10,
+          ),
+        ],
+      ),);
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      bottomNavigationBar: MediaQuery.of(context).size.width < 600 && isConnected ?
+      setBottomBar():null,
       backgroundColor: Colors.white,
       body: Row(
         children: [
-
           if (MediaQuery.of(context).size.width >= 600)
             LayoutBuilder(builder: (context,constraints){
               return SingleChildScrollView(
@@ -57,42 +150,14 @@ class MainPageState extends State<MainPage>{
                     minHeight: constraints.maxHeight,
                   ),
                   child: IntrinsicHeight(
-                    child: NavigationRail(
-
-                      onDestinationSelected: (int index) {
-                        setState(() {
-                          selectedIndex = index;
-                        });
-                      },
-                      selectedIndex: selectedIndex, destinations: const [
-                      NavigationRailDestination(
-                          icon: Icon(Icons.person),label: Text("Connexion")),
-                      NavigationRailDestination(
-                          icon: Icon(Icons.book), label: Text('Ajoute un livre')),
-                      NavigationRailDestination(
-                          icon: Icon(Icons.library_books), label: Text('Bibliothèque')),
-                      NavigationRailDestination(
-                          icon: Icon(Icons.star), label: Text('Wishlist')),],
-                      labelType: NavigationRailLabelType.all,
-                      selectedLabelTextStyle: const TextStyle(
-                        color: Colors.indigoAccent,
-                      ),
-                      leading: Column(
-                        children: const [
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),),
+                    child: isConnected ? setNavigationBar() : null,
                   ),
                 ),
               );
             })
-
           ,
-          Expanded(child: pages[selectedIndex]),
+          Expanded(child: setPages()[selectedIndex]),
         ]
-
       ),
 
     );

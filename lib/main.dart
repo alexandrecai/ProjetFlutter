@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projetflutter/Objects/User.dart';
 import 'package:projetflutter/Pages/MainPage.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "ProjetFlutter",
-      home: MainPage(),
+      home: MainPage(false,User(0,"null","null","null","null",false,[],[])),
     );
   }
 }

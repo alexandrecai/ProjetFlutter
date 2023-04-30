@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:projetflutter/Objects/User.dart';
+import 'package:projetflutter/Pages/MainPage.dart';
 import 'package:projetflutter/Pages/RegisterPage.dart';
 
 import '../Controllers/HttpServiceUser.dart';
@@ -96,6 +97,8 @@ class LoginState extends State<LoginPage> {
                                     const SnackBar(
                                         content: Text('Vous etes connecté')),
                                   );
+                                  User user = await getUser(emailController.text);
+                                  await Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainPage(true, user)));
                                   //Navigator.pop(context);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -136,4 +139,14 @@ class LoginState extends State<LoginPage> {
     }
     return false;
   }
+  Future<User> getUser(String email) async {
+    List<User> users = await httpserviceuser.getAllUsers();
+    for(User user in users) {
+      if (user.mail == email) {
+        return user;
+      }
+    }
+    return User(0,"null","null","null","null",false,[],[]);
+  }
+
 }
