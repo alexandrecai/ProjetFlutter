@@ -35,6 +35,7 @@ class HttpServiceBook {
     }
   }
 
+  // à modifier
   Future<http.Response> postBook(String nom,String description,Categorie categorie,MaisonEdition maisonEdition,Author author,String cote,String ISBN,int annee,bool statut,List<User> utilisateurs) async {
     //String stringRequest = baseURL+"/auteurs/?nom="+nom+"&prenom="+prenom+"&id="+ id.toString();
     Map<String,dynamic> bodyMap = Map();
@@ -50,6 +51,7 @@ class HttpServiceBook {
     return res;
   }
 
+  // à modifier
   Future<http.Response> updateBook(int id,String nom) async {
     //String stringRequest = baseURL+"/auteurs/?nom="+nom+"&prenom="+prenom+"&id="+ id.toString();
     Map<String,Object> parameters = Map();

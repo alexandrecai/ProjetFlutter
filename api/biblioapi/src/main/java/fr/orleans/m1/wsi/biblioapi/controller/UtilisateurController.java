@@ -1,5 +1,8 @@
 package fr.orleans.m1.wsi.biblioapi.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.orleans.m1.wsi.biblioapi.modele.Utilisateur;
 import fr.orleans.m1.wsi.biblioapi.modele.Wishlist;
 import fr.orleans.m1.wsi.biblioapi.service.UtilisateurService;
@@ -8,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/utilisateurs")
@@ -41,7 +46,19 @@ public class UtilisateurController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Utilisateur> createUtilisateur(@RequestBody Utilisateur utilisateur) {
+    public ResponseEntity<Utilisateur> createUtilisateur(@RequestBody JsonNode utilisateurNode) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map utilisateurMap = objectMapper.convertValue(utilisateurNode, Map.class);
+
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setNom((String) utilisateurMap.get("nom"));
+        utilisateur.setPrenom((String) utilisateurMap.get("prenom"));
+        utilisateur.setMail((String) utilisateurMap.get("mail"));
+        utilisateur.setMotDePasse((String) utilisateurMap.get("mot_de_passe"));
+        utilisateur.setAdmin((Boolean) utilisateurMap.get("is_admin"));
+        utilisateur.setLivresEmpruntes(Collections.emptyList());
+        utilisateur.setWishlists(Collections.emptyList());
+
         Utilisateur createdUtilisateur = utilisateurService.createUtilisateur(utilisateur);
         if (createdUtilisateur == null) {
             return ResponseEntity.badRequest().build();
@@ -50,23 +67,39 @@ public class UtilisateurController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Utilisateur> updateUtilisateur(@PathVariable Long id, @RequestBody Utilisateur utilisateur) {
+    public ResponseEntity<Utilisateur> updateUtilisateur(@PathVariable Long id, @RequestBody JsonNode jsonNode) {
         Utilisateur updatedUtilisateur = utilisateurService.getUtilisateurById(id);
-        if (updatedUtilisateur != null) {
-            updatedUtilisateur.setNom(utilisateur.getNom());
-            updatedUtilisateur.setPrenom(utilisateur.getPrenom());
-            updatedUtilisateur.setMail(utilisateur.getMail());
-            updatedUtilisateur.setMotDePasse(utilisateur.getMotDePasse());
-            updatedUtilisateur.setAdmin(utilisateur.getAdmin());
-            updatedUtilisateur.setLivresEmpruntes(utilisateur.getLivresEmpruntes());
-            updatedUtilisateur.setWishlists(utilisateur.getWishlists());
-
-            utilisateurService.updateUtilisateur(updatedUtilisateur);
-
-            return ResponseEntity.ok(updatedUtilisateur);
+        if (updatedUtilisateur == null) {
+            return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.notFound().build();
+        // Convertir JsonNode en Map
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> userData = objectMapper.convertValue(jsonNode, new TypeReference<Map<String,Object>>() {});
+
+        // Mettre à jour les propriétés de l'utilisateur
+        if (userData.containsKey("nom")) {
+            updatedUtilisateur.setNom((String) userData.get("nom"));
+        }
+        if (userData.containsKey("prenom")) {
+            updatedUtilisateur.setPrenom((String) userData.get("prenom"));
+        }
+        if (userData.containsKey("mail")) {
+            updatedUtilisateur.setMail((String) userData.get("mail"));
+        }
+        if (userData.containsKey("mot_de_passe")) {
+            updatedUtilisateur.setMotDePasse((String) userData.get("mot_de_passe"));
+        }
+        if (userData.containsKey("is_admin")) {
+            updatedUtilisateur.setAdmin((Boolean) userData.get("is_admin"));
+        }
+
+        Utilisateur _updatedUtilisateur = utilisateurService.updateUtilisateur(updatedUtilisateur);
+        if (_updatedUtilisateur == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(_updatedUtilisateur);
+
     }
 
     @DeleteMapping("/{id}")

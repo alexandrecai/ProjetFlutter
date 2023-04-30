@@ -1,7 +1,6 @@
 package fr.orleans.m1.wsi.biblioapi.modele;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 @Entity
