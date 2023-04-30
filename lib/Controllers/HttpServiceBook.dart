@@ -117,6 +117,110 @@ class HttpServiceBook {
     }
   }
 
+  Future<List<Book>> getAllBookByAuthor(int authorId) async {
+    Uri request = Uri.http(baseURL,"/livres/auteur/"+authorId.toString());
+    final http.Response res = await http.get(request);
+    print(res.statusCode);
+    if(res.statusCode == 200){
+      var body = jsonDecode(res.body);
+      List<Book> books = [];
+      for (var liv in body) {
+        bool statut = false;
+        if(liv['statut'] == "LIBRE"){
+          statut = true;
+        }
+        Book livre = Book(
+            liv['id'],liv['nom'],liv['description'],Categorie(liv['categorie']["id"],liv['categorie']["nom"]),MaisonEdition(liv['maisonEdition']["id"],liv['maisonEdition']["nom"],[],[]),Author(liv['auteur']["id"],liv['auteur']["nom"],liv['auteur']["prenom"]),liv['cote'],liv['isbn'],statut,liv['anneeParution'],[]
+        );
+        print(livre.toString());
+        books.add(livre);
+      }
+      return books;
+    }
+    else{
+      List<Book> books = [];
+      return books;
+    }
+  }
+
+  Future<List<Book>> getAllBookByCategorie(int categorieId) async {
+    Uri request = Uri.http(baseURL,"/livres/categorie/"+categorieId.toString());
+    final http.Response res = await http.get(request);
+    print(res.statusCode);
+    if(res.statusCode == 200){
+      var body = jsonDecode(res.body);
+      List<Book> books = [];
+      for (var liv in body) {
+        bool statut = false;
+        if(liv['statut'] == "LIBRE"){
+          statut = true;
+        }
+        Book livre = Book(
+            liv['id'],liv['nom'],liv['description'],Categorie(liv['categorie']["id"],liv['categorie']["nom"]),MaisonEdition(liv['maisonEdition']["id"],liv['maisonEdition']["nom"],[],[]),Author(liv['auteur']["id"],liv['auteur']["nom"],liv['auteur']["prenom"]),liv['cote'],liv['isbn'],statut,liv['anneeParution'],[]
+        );
+        print(livre.toString());
+        books.add(livre);
+      }
+      return books;
+    }
+    else{
+      List<Book> books = [];
+      return books;
+    }
+  }
+
+  Future<List<Book>> getAllBookByUtilisateur(int utilisateurId) async {
+    Uri request = Uri.http(baseURL,"/livres/emprunte-par/"+utilisateurId.toString());
+    final http.Response res = await http.get(request);
+    print(res.statusCode);
+    if(res.statusCode == 200){
+      var body = jsonDecode(res.body);
+      List<Book> books = [];
+      for (var liv in body) {
+        bool statut = false;
+        if(liv['statut'] == "LIBRE"){
+          statut = true;
+        }
+        Book livre = Book(
+            liv['id'],liv['nom'],liv['description'],Categorie(liv['categorie']["id"],liv['categorie']["nom"]),MaisonEdition(liv['maisonEdition']["id"],liv['maisonEdition']["nom"],[],[]),Author(liv['auteur']["id"],liv['auteur']["nom"],liv['auteur']["prenom"]),liv['cote'],liv['isbn'],statut,liv['anneeParution'],[]
+        );
+        print(livre.toString());
+        books.add(livre);
+      }
+      return books;
+    }
+    else{
+      List<Book> books = [];
+      return books;
+    }
+  }
+
+  Future<List<Book>> getAllBookByName(String name) async {
+    Uri request = Uri.http(baseURL,"/livres/nom/"+name);
+    final http.Response res = await http.get(request);
+    print(res.statusCode);
+    if(res.statusCode == 200){
+      var body = jsonDecode(res.body);
+      List<Book> books = [];
+      for (var liv in body) {
+        bool statut = false;
+        if(liv['statut'] == "LIBRE"){
+          statut = true;
+        }
+        Book livre = Book(
+            liv['id'],liv['nom'],liv['description'],Categorie(liv['categorie']["id"],liv['categorie']["nom"]),MaisonEdition(liv['maisonEdition']["id"],liv['maisonEdition']["nom"],[],[]),Author(liv['auteur']["id"],liv['auteur']["nom"],liv['auteur']["prenom"]),liv['cote'],liv['isbn'],statut,liv['anneeParution'],[]
+        );
+        print(livre.toString());
+        books.add(livre);
+      }
+      return books;
+    }
+    else{
+      List<Book> books = [];
+      return books;
+    }
+  }
+
   Future<int> getBookSize() async{
     Uri request = Uri.http(baseURL,"/livres/");
     final http.Response res = await http.get(request);

@@ -50,5 +50,9 @@ public class LivreService {
     public List<Livre> getLivresByNom(String nom) {
         return livreRepository.findByNomContainingIgnoreCase(nom);
     }
+
+    public List<Livre> getLivresEmpruntesByUtilisateurId(Long utilisateurId) {
+        return livreRepository.findByEmprunteParId(utilisateurId);
+    }
 }
 

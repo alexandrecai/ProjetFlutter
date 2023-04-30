@@ -74,6 +74,15 @@ public class LivreController {
         }
     }
 
+    @GetMapping("/emprunte-par/{utilisateurId}")
+    public ResponseEntity<List<Livre>> getLivresEmpruntesByUtilisateurId(@PathVariable Long utilisateurId) {
+        List<Livre> livresEmpruntes = livreService.getLivresEmpruntesByUtilisateurId(utilisateurId);
+        if (livresEmpruntes.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(livresEmpruntes);
+    }
+
 
     @PostMapping("/")
     public ResponseEntity<Livre> createLivre(@RequestBody JsonNode livreNode) {

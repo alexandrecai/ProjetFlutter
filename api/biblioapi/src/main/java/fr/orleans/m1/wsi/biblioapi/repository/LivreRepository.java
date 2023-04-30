@@ -12,4 +12,5 @@ public interface LivreRepository extends JpaRepository<Livre, Long> {
     List<Livre> findByAuteur_Id(Long auteurId);
     List<Livre> findByCategorie_Id(Long categorieId);
     List<Livre> findByMaisonEdition_Id(Long maisonEditionId);
+    List<Livre> findByEmprunteParId(Long utilisateurId);
 }
