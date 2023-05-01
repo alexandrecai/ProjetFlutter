@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:projetflutter/Objects/User.dart';
 import 'package:projetflutter/Pages/MainPage.dart';
-import 'package:projetflutter/Pages/RegisterPage.dart';
 
 import '../Controllers/HttpServiceUser.dart';
 
