@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projetflutter/Pages/AuthentificationPage.dart';
 import 'package:projetflutter/Pages/BookCreationPage.dart';
 import 'package:projetflutter/Pages/BookListPage.dart';
+import 'package:projetflutter/Pages/CategorieCreationPage.dart';
 import 'package:projetflutter/Pages/LoginPage.dart';
 import 'package:projetflutter/Pages/MaisonEditionCreationPage.dart';
 import 'package:projetflutter/Pages/ProfilePage.dart';
@@ -42,7 +43,8 @@ class MainPageState extends State<MainPage>{
           ProfilePage(currentUser),
           BookCreationPage(),
           MaisonEditionCreationPage(),
-          AuthorCreationPage()
+          AuthorCreationPage(),
+          CategorieCreationPage()
         ];
       }
       return [
@@ -75,6 +77,7 @@ class MainPageState extends State<MainPage>{
           BottomNavigationBarItem(icon: Icon(Icons.book),label: "Creer livre"),
           BottomNavigationBarItem(icon: Icon(Icons.home),label: "Creer Maison Edition"),
           BottomNavigationBarItem(icon: Icon(Icons.create),label: "Creer Auteur"),
+          BottomNavigationBarItem(icon: Icon(Icons.category),label: "Creer Catégorie"),
         ],
       );
     }
@@ -125,6 +128,8 @@ class MainPageState extends State<MainPage>{
             icon: Icon(Icons.house,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Créer maison edition'), padding: EdgeInsetsDirectional.all(8)),
         NavigationRailDestination(
             icon: Icon(Icons.create,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Créer auteur'), padding: EdgeInsetsDirectional.all(8)),
+        NavigationRailDestination(
+            icon: Icon(Icons.category,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Créer catégorie'), padding: EdgeInsetsDirectional.all(8)),
         ],
         labelType: NavigationRailLabelType.all,
         selectedLabelTextStyle: const TextStyle(

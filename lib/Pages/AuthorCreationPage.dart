@@ -139,7 +139,7 @@ class AuthorCreationState extends State<AuthorCreationPage>{
                                 itemCount: authors.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
-                                    leading: const Icon(Icons.house),
+                                    leading: const Icon(Icons.create),
                                     title: Text(authors[index].nom + " " + authors[index].prenom ),
                                     subtitle: Text(authors[index].ID.toString()),
                                   );
@@ -255,7 +255,7 @@ class AuthorCreationState extends State<AuthorCreationPage>{
                                 itemCount: authors.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
-                                    leading: const Icon(Icons.house),
+                                    leading: const Icon(Icons.create),
                                     title: Text(authors[index].nom + " " + authors[index].prenom ),
                                     subtitle: Text(authors[index].ID.toString()),
                                   );
