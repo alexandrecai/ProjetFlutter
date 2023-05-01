@@ -3,6 +3,7 @@ import 'package:projetflutter/Pages/AuthentificationPage.dart';
 import 'package:projetflutter/Pages/BookCreationPage.dart';
 import 'package:projetflutter/Pages/BookListPage.dart';
 import 'package:projetflutter/Pages/LoginPage.dart';
+import 'package:projetflutter/Pages/MaisonEditionCreationPage.dart';
 import 'package:projetflutter/Pages/ProfilePage.dart';
 import 'package:projetflutter/Pages/RegisterPage.dart';
 import 'package:projetflutter/Pages/UserBookBorrowedPage.dart';
@@ -39,6 +40,7 @@ class MainPageState extends State<MainPage>{
           UserBookBorrowedPage(currentUser),
           ProfilePage(currentUser),
           BookCreationPage(),
+          MaisonEditionCreationPage()
         ];
       }
       return [
@@ -68,8 +70,8 @@ class MainPageState extends State<MainPage>{
           BottomNavigationBarItem(icon: Icon(Icons.favorite),label: "Wishlist"),
           BottomNavigationBarItem(icon: Icon(Icons.bookmark),label: "Mes livres empruntés"),
           BottomNavigationBarItem(icon: Icon(Icons.person),label: "Profil"),
-          BottomNavigationBarItem(icon: Icon(Icons.book),label: "Ajoute un livre"),
-
+          BottomNavigationBarItem(icon: Icon(Icons.book),label: "Creer livre"),
+          BottomNavigationBarItem(icon: Icon(Icons.home),label: "Creer Maison Edition"),
         ],
       );
     }
@@ -115,7 +117,9 @@ class MainPageState extends State<MainPage>{
           NavigationRailDestination(
               icon: Icon(Icons.person,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Profil'), padding: EdgeInsetsDirectional.all(8)),
         NavigationRailDestination(
-            icon: Icon(Icons.book,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Ajoute un livre'), padding: EdgeInsetsDirectional.all(8)),
+            icon: Icon(Icons.book,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Créer livre'), padding: EdgeInsetsDirectional.all(8)),
+        NavigationRailDestination(
+            icon: Icon(Icons.house,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Créer maison edition'), padding: EdgeInsetsDirectional.all(8)),
         ],
         labelType: NavigationRailLabelType.all,
         selectedLabelTextStyle: const TextStyle(
