@@ -151,8 +151,8 @@ class HttpServiceWishlist {
     }
   }
 
-  Future<String> deleteWishlistByID(int id) async{
-    Uri request = Uri.http(baseURL,"/wishlists/"+id.toString());
+  Future<String> deleteWishlistByID(int utilisateurId, int livreId) async{
+    Uri request = Uri.http(baseURL,"/wishlists/"+utilisateurId.toString()+"/"+livreId.toString());
     final http.Response res = await http.delete(request);
     if(res.statusCode == 204){
       return res.statusCode.toString();

@@ -34,7 +34,7 @@ class MainPageState extends State<MainPage>{
     if(isConnected){
       if(currentUser.isAdmin){
         return [
-          BookListPage(),
+          BookListPage(currentUser: currentUser,),
           WishlistPage(currentUser),
           UserBookBorrowedPage(currentUser),
           ProfilePage(currentUser),
@@ -42,7 +42,7 @@ class MainPageState extends State<MainPage>{
         ];
       }
       return [
-        BookListPage(),
+        BookListPage(currentUser: currentUser,),
         WishlistPage(currentUser),
         UserBookBorrowedPage(currentUser),
         ProfilePage(currentUser),

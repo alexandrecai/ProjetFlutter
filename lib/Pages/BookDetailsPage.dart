@@ -1,83 +1,369 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:projetflutter/Controllers/HttpServiceBook.dart';
+import 'package:projetflutter/Controllers/HttpServiceWishlist.dart';
+import 'package:projetflutter/Objects/Author.dart';
+import 'package:projetflutter/Objects/Categorie.dart';
+import 'package:projetflutter/Objects/MaisonEdition.dart';
 
-class BookDetailsPage extends StatelessWidget {
+import '../Objects/Book.dart';
+import '../Objects/User.dart';
+
+class BookDetailsPage extends StatefulWidget {
+
+
+  String provenance;
+  Book currentBook;
+  User currentUser;
+
+
+  /*
   final String title;
   final String author;
   final String description;
   final String year;
   final String isbn;
 
-  const BookDetailsPage({
+   */
+
+  BookDetailsPage({
     Key? key,
-    required this.title,
-    required this.author,
-    required this.description,
-    required this.year,
-    required this.isbn,
+    required this.provenance,
+    required this.currentBook,
+    required this.currentUser,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              author,
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              description,
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              year,
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              isbn,
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(height: 16.0),
-            Row(
+  State<StatefulWidget> createState() => BookDetailsState(provenance,currentBook,currentUser);
+
+}
+
+class BookDetailsState extends State<BookDetailsPage>{
+
+  String provenance;
+  Book currentBook;
+  User currentUser;
+
+
+  BookDetailsState(this.provenance, this.currentBook, this.currentUser);
+
+  bool inWishList = false;
+  bool borrowed = false;
+  bool isClicked = false;
+
+  Future<List<bool>> alreadyInWishlist() async {
+    List<bool> bools = [];
+    HttpServiceWishlist httpServiceWishlist = HttpServiceWishlist();
+    var Wishlist = await httpServiceWishlist.getWishlistById(currentUser.ID, currentBook.ID);
+    if(Wishlist.utilisateurId == 0 && Wishlist.livreId == 0){
+      bools.add(false);
+    }
+    else{
+      bools.add(true);
+    }
+    HttpServiceBook httpServiceBook = HttpServiceBook();
+    var book = await httpServiceBook.getBookByID(currentBook.ID);
+    if(book.isAvailable){
+      bools.add(false);
+    }
+    else{
+      bools.add(true);
+    }
+    return bools;
+  }
+
+  Future<bool> alreadyBorrowed() async {
+    HttpServiceBook httpServiceBook = HttpServiceBook();
+    var book = await httpServiceBook.getBookByID(currentBook.ID);
+    if(book.isAvailable){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+
+  Row boutons(double Width, double Height){
+    HttpServiceWishlist httpServiceWishlist = HttpServiceWishlist();
+    HttpServiceBook httpServiceBook = HttpServiceBook();
+    if(provenance == "booklist"){
+      if(inWishList==true){
+        if(borrowed==false){
+          return Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
+                MaterialButton(
+                  minWidth: Width>600 ? Width*0.1 : Width*0.2,
+                  color: Colors.indigoAccent,
+                  textColor: Colors.white,
                   onPressed: () {
+                    httpServiceWishlist.deleteWishlistByID(currentUser.ID, currentBook.ID);
                     // Code pour ajouter un livre
+                    setState((){
+                      inWishList = false;
+                    });
                   },
-                  child: Text('Wishlist'),
+                  child: Text('Retirer de ma Wishlist'),
                 ),
-                ElevatedButton(
-                  onPressed: () {
+                MaterialButton(
+                  minWidth: Width>600 ? Width*0.1 : Width*0.2,
+                  color: Colors.indigoAccent,
+                  textColor: Colors.white,
+                  onPressed: () async {
+                    Book book = await httpServiceBook.getBookByID(currentBook.ID);
+                    httpServiceBook.updateBook(book.ID, book.name, book.description, book.categorie, book.maisonEdition, book.author, book.cote, book.ISBN, book.releaseYear, false, currentUser.ID);
+                    setState((){
+                      borrowed = true;
+                    });
                     // Code pour emprunter un livre
                   },
                   child: Text('Emprunter'),
                 ),
-                ElevatedButton(
+              ]);
+        }
+        else{
+          return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                MaterialButton(
+                  minWidth: Width>600 ? Width*0.1 : Width*0.2,
+                  color: Colors.indigoAccent,
+                  textColor: Colors.white,
                   onPressed: () {
-                    // Code pour rendre un livre
+
+                    httpServiceWishlist.deleteWishlistByID(currentUser.ID, currentBook.ID);
+                    // Code pour ajouter un livre
+                    setState((){
+                      inWishList = false;
+                    });
+                    // Code pour ajouter un livre
                   },
-                  child: Text('Rendre'),
+                  child: Text('Retirer de ma Wishlist'),
                 ),
-              ],
-            ),
-          ],
+
+              ]);
+        }
+
+      }
+      else {
+        if (borrowed == false) {
+          return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                MaterialButton(
+                  minWidth: Width > 600 ? Width * 0.1 : Width * 0.2,
+                  color: Colors.indigoAccent,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    httpServiceWishlist.postWishlist(
+                        currentUser.ID, currentBook.ID);
+                    setState(() {
+                      inWishList = true;
+                    });
+                    // Code pour ajouter un livre
+                  },
+                  child: Text('Ajouter à ma Wishlist'),
+                ),
+                MaterialButton(
+                  minWidth: Width > 600 ? Width * 0.1 : Width * 0.2,
+                  color: Colors.indigoAccent,
+                  textColor: Colors.white,
+                  onPressed: () async {
+                    Book book = await httpServiceBook.getBookByID(
+                        currentBook.ID);
+                    httpServiceBook.updateBook(
+                        book.ID,
+                        book.name,
+                        book.description,
+                        book.categorie,
+                        book.maisonEdition,
+                        book.author,
+                        book.cote,
+                        book.ISBN,
+                        book.releaseYear,
+                        false,
+                        currentUser.ID);
+                    setState(()  {
+                      borrowed = true;
+                    });
+                    // Code pour emprunter un livre
+                  },
+                  child: Text('Emprunter'),
+                ),
+              ]);
+        } else {
+          return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                MaterialButton(
+                  minWidth: Width > 600 ? Width * 0.1 : Width * 0.2,
+                  color: Colors.indigoAccent,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    httpServiceWishlist.postWishlist(
+                        currentUser.ID, currentBook.ID);
+                    setState(() {
+                      inWishList = true;
+                    });
+                    // Code pour ajouter un livre
+                  },
+                  child: Text('Ajouter à ma Wishlist'),
+                ),
+
+              ]);
+        }
+      }
+    }
+    else{
+      if(!isClicked){
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              MaterialButton(
+                minWidth: Width>600 ? Width*0.1 : Width*0.2,
+                color: Colors.indigoAccent,
+                textColor: Colors.white,
+                onPressed: () async {
+                  Book book = await httpServiceBook.getBookByID(currentBook.ID);
+                  httpServiceBook.rendreBook(book.ID, book.name, book.description, book.categorie, book.maisonEdition, book.author, book.cote, book.ISBN, book.releaseYear, true);
+                  setState((){
+                    borrowed = false;
+                    isClicked = true;
+                  });
+                  // Code pour rendre un livre
+                },
+                child: Text('Rendre'),
+              ),
+            ]);
+      }else{
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: []);
+      }
+
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final Width = MediaQuery.of(context).size.width;
+    final Height = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(currentBook.name),
         ),
-      ),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.only(top: Height*0.1),
+              child: Container(
+                  alignment: Alignment.center,
+                  width: Width>1000 ? Width*0.3 : Width*0.7,
+                  height: Height*0.6,
+                  color: CupertinoColors.lightBackgroundGray,
+                  child: SingleChildScrollView(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              currentBook.name,
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              currentBook.author.prenom + " " + currentBook.author.nom,
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              currentBook.maisonEdition.name,
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              currentBook.categorie.libelle,
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              currentBook.description,
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              currentBook.releaseYear.toString(),
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              "ISBN : " + currentBook.ISBN,
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          ),
+                          FutureBuilder<List<bool>>(
+                              future: alreadyInWishlist(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  inWishList = snapshot.data!.first;
+                                  borrowed = snapshot.data!.last;
+                                  return Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: boutons(
+                                        Width, Height),
+                                  );
+                                } else {
+                                  return const Padding(
+                                    padding: EdgeInsets.only(right: 15.0,
+                                        left: 15.0,
+                                        bottom: 15.0,
+                                        top: 30),
+                                    child: Center(
+                                        child: Text(
+                                            'Erreur lors du chargement des boutons')),
+                                  );
+                                }
+
+                              }
+                          )]
+
+                    ),
+                  )
+              ),
+            ),
+          ),
+        )
     );
   }
 }

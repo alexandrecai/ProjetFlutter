@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:projetflutter/Controllers/HttpServiceBook.dart';
 
 import '../Objects/Book.dart';
+import '../Objects/User.dart';
 import 'BookDetailsPage.dart';
 
 class SearchBarDelegate extends SearchDelegate<String> {
-  final List<Book> books;
 
-  SearchBarDelegate(this.books);
+  List<Book> books;
+  User currentUser;
+
+  SearchBarDelegate(this.books,this.currentUser);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -35,35 +39,45 @@ class SearchBarDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    HttpServiceBook httpServiceBook = HttpServiceBook();
+
     final List<Book> suggestionList = query.isEmpty
         ? books // show all books if query is empty
         : books.where((book) =>
         book.name.toLowerCase().contains(query.toLowerCase())).toList();
 
-    return ListView.builder(
-      itemCount: suggestionList.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          leading: const Icon(Icons.book),
-          title: Text(suggestionList[index].name),
-          subtitle: Text(suggestionList[index].description),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) =>
-                    BookDetailsPage(
-                      title: suggestionList[index].name,
-                      author: suggestionList[index].author.nom,
-                      description: suggestionList[index].description,
-                      year: suggestionList[index].releaseYear.toString(),
-                      isbn: suggestionList[index].ISBN,
-                    ),
-              ),
+    return FutureBuilder<List<Book>>(
+        future: httpServiceBook.getAllBook(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            books = snapshot.requireData;
+            return ListView.builder(
+              itemCount: suggestionList.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: const Icon(Icons.book),
+                  title: Text(suggestionList[index].name),
+                  subtitle: Text(suggestionList[index].description),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            BookDetailsPage(
+                              provenance: "booklist",
+                              currentBook: suggestionList[index],
+                              currentUser: currentUser,
+                            ),
+                      ),
+                    );
+                  },
+                );
+              },
             );
-          },
-        );
-      },
+          } else {
+            return const Center(child: Text("Il n'y a pas de livre"));
+          }
+        }
     );
   }
 }

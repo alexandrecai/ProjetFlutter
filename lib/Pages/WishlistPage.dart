@@ -49,11 +49,9 @@ class _WishlistState extends State<WishlistPage> {
                           MaterialPageRoute(
                             builder: (_) =>
                                 BookDetailsPage(
-                                  title: books[index].name,
-                                  author: books[index].author.nom,
-                                  description: books[index].description,
-                                  year: books[index].releaseYear.toString(),
-                                  isbn: books[index].ISBN,
+                                  provenance: "booklist",
+                                  currentBook: books[index],
+                                  currentUser: currentUser,
                                 ),
                           ),
                         );

@@ -150,6 +150,9 @@ public class LivreController {
         if (bookData.containsKey("emprunte_par")) {
             existingLivre.setEmpruntePar(utilisateurService.getUtilisateurById(((Number) bookData.get("emprunte_par")).longValue()));
         }
+        else{
+            existingLivre.setEmpruntePar(null);
+        }
 
         Livre updatedLivre = livreService.updateLivre(existingLivre);
         if (updatedLivre == null) {

@@ -91,6 +91,34 @@ class HttpServiceBook {
     return res;
   }
 
+  Future<http.Response> rendreBook(int id,String nom,String description,Categorie categorie,MaisonEdition maisonEdition,Author author,String cote,String ISBN,int annee,bool statut) async {
+    Map<String,dynamic> bodyMap = {
+      'nom': nom,
+      'description': description,
+      'categorie': categorie.ID,
+      'maison_edition': maisonEdition.ID,
+      'auteur': author.ID,
+      'cote': cote,
+      'ISBN': ISBN,
+      'annee': annee,
+      'statut': statut,
+    };
+    final body = jsonEncode(bodyMap);
+    Uri request = Uri.http(baseURL,"/livres/"+id.toString());
+    print(request.toString());
+    final http.Response res = await http.put(
+        request,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: body
+    );
+    print(res.statusCode);
+    return res;
+  }
+
+
   Future<List<Book>> getAllBook() async {
     Uri request = Uri.http(baseURL,"/livres/");
     final http.Response res = await http.get(request);

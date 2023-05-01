@@ -9,15 +9,28 @@ import '../Objects/Author.dart';
 import '../Objects/Book.dart';
 import '../Objects/Categorie.dart';
 import '../Objects/MaisonEdition.dart';
+import '../Objects/User.dart';
 
 class BookListPage extends StatefulWidget {
-  const BookListPage({super.key});
+
+  User currentUser;
+
+  BookListPage({
+    super.key,
+    required this.currentUser,
+  });
 
   @override
-  State<BookListPage> createState() => _BookListPageState();
+  State<BookListPage> createState() => _BookListPageState(currentUser);
 }
 
 class _BookListPageState extends State<BookListPage> {
+
+  User currentUser;
+
+  _BookListPageState(
+      this.currentUser,
+      );
 
   HttpServiceBook liste = HttpServiceBook();
   List<Book> books=[];
@@ -50,7 +63,7 @@ class _BookListPageState extends State<BookListPage> {
       onPressed: () async {
         final String? searchQuery = await showSearch<String>(
           context: context,
-          delegate: SearchBarDelegate(books),
+          delegate: SearchBarDelegate(books,currentUser),
         );
       },
     ),
@@ -72,11 +85,9 @@ class _BookListPageState extends State<BookListPage> {
                     context,
                     MaterialPageRoute(
                       builder: (_) => BookDetailsPage(
-                        title: books[index].name,
-                        author: books[index].author.nom,
-                        description: books[index].description,
-                        year: books[index].releaseYear.toString(),
-                        isbn: books[index].ISBN,
+                        provenance: "booklist",
+                        currentBook: books[index],
+                        currentUser: currentUser,
                       ),
                     ),
                   );
