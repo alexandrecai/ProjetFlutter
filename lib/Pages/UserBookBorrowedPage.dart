@@ -44,8 +44,8 @@ class _UserBookBorrowedState extends State<UserBookBorrowedPage> {
                   leading: const Icon(Icons.book),
                   title: Text(books[index].name),
                   subtitle: Text(books[index].description),
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    bool? updated = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) =>
@@ -56,6 +56,9 @@ class _UserBookBorrowedState extends State<UserBookBorrowedPage> {
                             ),
                       ),
                     );
+                    if (updated == true) {
+                      setState(() {});
+                    }
                   },
                 );
               } );

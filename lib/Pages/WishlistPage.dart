@@ -24,9 +24,12 @@ class _WishlistState extends State<WishlistPage> {
   HttpServiceUser httpServiceUser = HttpServiceUser();
   List<Book> books = [];
 
+  bool returned = false;
+
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
+
       title: const Center(child: Text("Wishlist", textAlign: TextAlign.center)),
     ),
     body: FutureBuilder<User>(
@@ -43,8 +46,8 @@ class _WishlistState extends State<WishlistPage> {
                       leading: const Icon(Icons.book),
                       title: Text(books[index].name),
                       subtitle: Text(books[index].description),
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        bool? updated = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) =>
@@ -55,6 +58,9 @@ class _WishlistState extends State<WishlistPage> {
                                 ),
                           ),
                         );
+                        if(updated == true) {
+                          setState(() {});
+                        }
                       },
                     );
                   } );

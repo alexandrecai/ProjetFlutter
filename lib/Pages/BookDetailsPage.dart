@@ -103,6 +103,10 @@ class BookDetailsState extends State<BookDetailsPage>{
                     setState((){
                       inWishList = false;
                     });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text("Vous venez de retirer le livre nommé " + currentBook.name + " de votre Wishlist")),
+                    );
                   },
                   child: Text('Retirer de ma Wishlist'),
                 ),
@@ -116,6 +120,10 @@ class BookDetailsState extends State<BookDetailsPage>{
                     setState((){
                       borrowed = true;
                     });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text("Vous venez d'emprunter le livre nommé " + currentBook.name)),
+                    );
                     // Code pour emprunter un livre
                   },
                   child: Text('Emprunter'),
@@ -137,6 +145,10 @@ class BookDetailsState extends State<BookDetailsPage>{
                     setState((){
                       inWishList = false;
                     });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text("Vous venez de retirer le livre nommé " + currentBook.name + " de votre Wishlist")),
+                    );
                     // Code pour ajouter un livre
                   },
                   child: Text('Retirer de ma Wishlist'),
@@ -161,6 +173,10 @@ class BookDetailsState extends State<BookDetailsPage>{
                     setState(() {
                       inWishList = true;
                     });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text("Vous venez d'ajouter le livre nommé " + currentBook.name + " à votre Wishlist")),
+                    );
                     // Code pour ajouter un livre
                   },
                   child: Text('Ajouter à ma Wishlist'),
@@ -187,6 +203,10 @@ class BookDetailsState extends State<BookDetailsPage>{
                     setState(()  {
                       borrowed = true;
                     });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text("Vous venez d'emprunter le livre nommé " + currentBook.name)),
+                    );
                     // Code pour emprunter un livre
                   },
                   child: Text('Emprunter'),
@@ -206,6 +226,10 @@ class BookDetailsState extends State<BookDetailsPage>{
                     setState(() {
                       inWishList = true;
                     });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text("Vous venez d'ajouter le livre nommé " + currentBook.name + " à votre Wishlist")),
+                    );
                     // Code pour ajouter un livre
                   },
                   child: Text('Ajouter à ma Wishlist'),
@@ -231,6 +255,10 @@ class BookDetailsState extends State<BookDetailsPage>{
                     borrowed = false;
                     isClicked = true;
                   });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text('Vous venez de rendre le livre nommé ' + currentBook.name)),
+                  );
                   // Code pour rendre un livre
                 },
                 child: Text('Rendre'),
@@ -253,6 +281,10 @@ class BookDetailsState extends State<BookDetailsPage>{
 
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
           title: Text(currentBook.name),
         ),
         body: SingleChildScrollView(
@@ -348,7 +380,7 @@ class BookDetailsState extends State<BookDetailsPage>{
                                     padding: EdgeInsets.only(right: 15.0,
                                         left: 15.0,
                                         bottom: 15.0,
-                                        top: 30),
+                                        top: 60),
                                     child: Center(
                                         child: Text(
                                             'Erreur lors du chargement des boutons')),
