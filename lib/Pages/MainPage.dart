@@ -10,6 +10,7 @@ import 'package:projetflutter/Pages/UserBookBorrowedPage.dart';
 import 'package:projetflutter/Pages/WishlistPage.dart';
 
 import '../Objects/User.dart';
+import 'AuthorCreationPage.dart';
 
 class MainPage extends StatefulWidget {
 
@@ -40,7 +41,8 @@ class MainPageState extends State<MainPage>{
           UserBookBorrowedPage(currentUser),
           ProfilePage(currentUser),
           BookCreationPage(),
-          MaisonEditionCreationPage()
+          MaisonEditionCreationPage(),
+          AuthorCreationPage()
         ];
       }
       return [
@@ -72,6 +74,7 @@ class MainPageState extends State<MainPage>{
           BottomNavigationBarItem(icon: Icon(Icons.person),label: "Profil"),
           BottomNavigationBarItem(icon: Icon(Icons.book),label: "Creer livre"),
           BottomNavigationBarItem(icon: Icon(Icons.home),label: "Creer Maison Edition"),
+          BottomNavigationBarItem(icon: Icon(Icons.create),label: "Creer Auteur"),
         ],
       );
     }
@@ -120,6 +123,8 @@ class MainPageState extends State<MainPage>{
             icon: Icon(Icons.book,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Créer livre'), padding: EdgeInsetsDirectional.all(8)),
         NavigationRailDestination(
             icon: Icon(Icons.house,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Créer maison edition'), padding: EdgeInsetsDirectional.all(8)),
+        NavigationRailDestination(
+            icon: Icon(Icons.create,size: Height>600 ? Height*0.05 : Height*0.1), label: const Text('Créer auteur'), padding: EdgeInsetsDirectional.all(8)),
         ],
         labelType: NavigationRailLabelType.all,
         selectedLabelTextStyle: const TextStyle(

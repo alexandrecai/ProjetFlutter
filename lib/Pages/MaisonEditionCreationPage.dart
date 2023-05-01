@@ -87,6 +87,7 @@ class MaisonEditionCreationState extends State<MaisonEditionCreationPage>{
                                                                 const SnackBar(
                                                                     content: Text("La maison d'édition a bien été crée")),
                                                               );
+                                                              nameController.clear();
                                                               setState(() {
                                                               });
                                                             }
@@ -187,8 +188,9 @@ class MaisonEditionCreationState extends State<MaisonEditionCreationPage>{
                                                                 const SnackBar(
                                                                     content: Text("La maison d'édition a bien été crée")),
                                                               );
+                                                              nameController.clear();
                                                               setState(() {
-                                                                
+
                                                               });
                                                             }
                                                             else{
