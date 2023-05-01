@@ -99,7 +99,7 @@ class AuthorCreationState extends State<AuthorCreationPage>{
                                                   await httpServiceAuthor.postAuthor(nameController.text, prenomController.text);
                                                   ScaffoldMessenger.of(context).showSnackBar(
                                                     const SnackBar(
-                                                        content: Text("L'auteur' a bien été crée")),
+                                                        content: Text("L'auteur a bien été crée")),
                                                   );
                                                   nameController.clear();
                                                   prenomController.clear();

@@ -9,10 +9,13 @@ import 'package:projetflutter/Objects/MaisonEdition.dart';
 import '../Objects/Author.dart';
 import '../Objects/User.dart';
 
+
 class HttpServiceBook {
+
 
   final String baseURL = "localhost:8080";  //       Pour le Web
   //final String baseURL = "10.0.2.2:8080"; //        pour Android
+
 
   Future<Book> getBookByID(int id) async {
     Uri request = Uri.http(baseURL,"/livres/"+ id.toString());
@@ -35,13 +38,13 @@ class HttpServiceBook {
     }
   }
 
-  Future<http.Response> postBook(String nom,String description,Categorie categorie,MaisonEdition maisonEdition,Author author,String cote,String ISBN,int annee,bool statut) async {
+  Future<http.Response> postBook(String nom,String description,int categorie,int maisonEdition,int author,String cote,String ISBN,int annee,bool statut) async {
     Map<String,dynamic> bodyMap = {
       'nom': nom,
       'description': description,
-      'categorie': categorie.ID,
-      'maison_edition': maisonEdition.ID,
-      'auteur': author.ID,
+      'categorie': categorie,
+      'maison_edition': maisonEdition,
+      'auteur': author,
       'cote': cote,
       'ISBN': ISBN,
       'annee': annee,
