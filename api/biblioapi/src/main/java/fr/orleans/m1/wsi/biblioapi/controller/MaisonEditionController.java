@@ -1,5 +1,7 @@
 package fr.orleans.m1.wsi.biblioapi.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.orleans.m1.wsi.biblioapi.modele.Livre;
 import fr.orleans.m1.wsi.biblioapi.modele.MaisonEdition;
 import fr.orleans.m1.wsi.biblioapi.service.LivreService;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/maisoneditions")
@@ -42,23 +45,37 @@ public class MaisonEditionController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<MaisonEdition> addMaisonEdition(@RequestBody MaisonEdition maisonEdition) {
+    public ResponseEntity<MaisonEdition> createMaisonEdition(@RequestBody JsonNode jsonNode) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map maisonEditionMap = objectMapper.convertValue(jsonNode, Map.class);
+
+        MaisonEdition maisonEdition = new MaisonEdition((String) maisonEditionMap.get("nom"));
+
         MaisonEdition savedMaisonEdition = maisonEditionService.createMaisonEdition(maisonEdition);
         return ResponseEntity.created(URI.create("/maisoneditions/" + savedMaisonEdition.getId())).body(savedMaisonEdition);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MaisonEdition> updateMaisonEdition(@PathVariable Long id, @RequestBody MaisonEdition maisonEdition) {
+    public ResponseEntity<MaisonEdition> updateMaisonEdition(@PathVariable Long id, @RequestBody JsonNode jsonNode) {
         MaisonEdition existingMaisonEdition = maisonEditionService.getMaisonEditionById(id);
-        if (existingMaisonEdition != null) {
-            existingMaisonEdition.setNom(maisonEdition.getNom());
-            existingMaisonEdition.setLivres(maisonEdition.getLivres());
-
-            maisonEditionService.updateMaisonEdition(existingMaisonEdition);
-
-            return ResponseEntity.ok(existingMaisonEdition);
+        if (existingMaisonEdition == null) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map maisonEditionMap = objectMapper.convertValue(jsonNode, Map.class);
+
+        if (maisonEditionMap.containsKey("nom")) {
+            existingMaisonEdition.setNom((String) maisonEditionMap.get("nom"));
+        }
+
+
+        MaisonEdition maisonEdition = maisonEditionService.updateMaisonEdition(existingMaisonEdition);
+
+        if (maisonEdition == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(maisonEdition);
     }
 
     @DeleteMapping("/{id}")

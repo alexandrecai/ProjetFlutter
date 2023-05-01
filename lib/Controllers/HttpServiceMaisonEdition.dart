@@ -27,28 +27,39 @@ class HttpServiceMaisonEdition {
   }
 
   Future<http.Response> postMaisonEdition(String nom) async {
-    //String stringRequest = baseURL+"/auteurs/?nom="+nom+"&prenom="+prenom+"&id="+ id.toString();
-    Map<String,dynamic> bodyMap = Map();
-    bodyMap.putIfAbsent("nom", () => nom);
+    Map<String,dynamic> bodyMap = {
+      "nom": nom
+    };
     final body = jsonEncode(bodyMap);
     Uri request = Uri.http(baseURL,"/maisoneditions/");
     print(body.toString());
-    final http.Response res = await http.post(request,headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },body: body);
+    final http.Response res = await http.post(
+        request,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: body
+    );
     print(res.statusCode);
     return res;
   }
 
-  Future<http.Response> updateMaisonEdition(int id,String nom) async {
-    Map<String,dynamic> bodyMap = Map();
-    bodyMap.putIfAbsent("nom", () => nom);
+  Future<http.Response> updateMaisonEdition(int id, String nom) async {
+    Map<String,dynamic> bodyMap = {
+      "nom": nom
+    };
     final body = jsonEncode(bodyMap);
     Uri request = Uri.http(baseURL,"/maisoneditions/"+id.toString());
     print(body.toString());
-    final http.Response res = await http.put(request,headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },body: body);
+    final http.Response res = await http.put(
+        request,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: body
+    );
     print(res.statusCode);
     return res;
   }
