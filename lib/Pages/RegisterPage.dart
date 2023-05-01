@@ -1,4 +1,10 @@
+
 import 'package:flutter/material.dart';
+import '../Controllers/HttpServiceUser.dart';
+import 'package:http/http.dart' as http;
+
+import '../Objects/User.dart';
+import 'MainPage.dart';
 
 class RegisterPage extends StatefulWidget{
 
@@ -17,6 +23,7 @@ class RegisterState extends State<RegisterPage> {
   bool firstnameSubmited = true;
   bool passwordSubmited = true;
   bool emailSubmited = true;
+  var httpServiceUser = HttpServiceUser();
 
   bool hasEnoughChar(TextEditingController ed) {
     final text = ed.value.text;
@@ -122,7 +129,7 @@ class RegisterState extends State<RegisterPage> {
                                   minWidth: Width>600 ? Width*0.30 : Width*0.5,
                                   //minWidth: MediaQuery.of(context).size.width * 0.15,
 
-                                  onPressed: (){
+                                  onPressed: () async {
                                     setState(() {
                                       hasEnoughChar(nameController) ? nameSubmited = true : nameSubmited = false;
                                       hasEnoughChar(firstnameController) ? firstnameSubmited = true : firstnameSubmited = false;
@@ -131,16 +138,32 @@ class RegisterState extends State<RegisterPage> {
 
                                     });
                                     if(nameSubmited && firstnameSubmited && passwordSubmited && emailSubmited){
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text("Votre compte a bien été crée")),
-                                      );
-                                      Navigator.pop(context);
+                                      int registration = await Register(nameController.value.text, firstnameController.value.text, emailController.value.text, passwordController.value.text);
+                                      if(registration == 201){
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                              content: Text("Votre compte a bien été crée.")),
+                                        );
+                                        User user = await getUser(emailController.text);
+                                        await Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainPage(true, user)));
+                                      }
+                                      else if(registration == 409){
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                              content: Text("Un compte avec ce mail existe déjà.")),
+                                        );
+                                      }
+                                      else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                              content: Text("Une erreur interne est survenue.")),
+                                        );
+                                      }
                                     }
                                     else{
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                            content: Text("Les informations n'ont pas été remplies correctement")),
+                                            content: Text("Les informations n'ont pas été remplies correctement.")),
                                       );
                                     }
                                   }
@@ -161,5 +184,22 @@ class RegisterState extends State<RegisterPage> {
           ),
         )
     );
+  }
+
+  Future<int> Register(String name, String firstName, String email, String password) async {
+
+    http.Response response = await httpServiceUser.postUser(name, firstName, email, password, false);
+
+    return response.statusCode;
+  }
+
+  Future<User> getUser(String email) async {
+    List<User> users = await httpServiceUser.getAllUsers();
+    for(User user in users) {
+      if (user.mail == email) {
+        return user;
+      }
+    }
+    return User(0,"null","null","null","null",false,[],[]);
   }
 }

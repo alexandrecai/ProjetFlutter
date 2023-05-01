@@ -44,20 +44,21 @@ class _UserBookBorrowedState extends State<UserBookBorrowedPage> {
                   leading: const Icon(Icons.book),
                   title: Text(books[index].name),
                   subtitle: Text(books[index].description),
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    bool? updated = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) =>
                             BookDetailsPage(
-                              title: books[index].name,
-                              author: books[index].author.nom,
-                              description: books[index].description,
-                              year: books[index].releaseYear.toString(),
-                              isbn: books[index].ISBN,
+                              provenance: "userborrowed",
+                              currentBook: books[index],
+                              currentUser: currentUser,
                             ),
                       ),
                     );
+                    if (updated == true) {
+                      setState(() {});
+                    }
                   },
                 );
               } );

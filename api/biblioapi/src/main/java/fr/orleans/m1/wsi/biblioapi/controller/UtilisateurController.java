@@ -7,6 +7,7 @@ import fr.orleans.m1.wsi.biblioapi.modele.Utilisateur;
 import fr.orleans.m1.wsi.biblioapi.modele.Wishlist;
 import fr.orleans.m1.wsi.biblioapi.service.UtilisateurService;
 import fr.orleans.m1.wsi.biblioapi.service.WishlistService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +50,11 @@ public class UtilisateurController {
     public ResponseEntity<Utilisateur> createUtilisateur(@RequestBody JsonNode utilisateurNode) {
         ObjectMapper objectMapper = new ObjectMapper();
         Map utilisateurMap = objectMapper.convertValue(utilisateurNode, Map.class);
+
+        String submittedMail = (String) utilisateurMap.get("mail");
+        if(utilisateurService.getUtilisateurByMail(submittedMail) != null){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
 
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setNom((String) utilisateurMap.get("nom"));
