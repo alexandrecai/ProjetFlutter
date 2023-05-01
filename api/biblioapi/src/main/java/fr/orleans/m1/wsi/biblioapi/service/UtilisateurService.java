@@ -34,6 +34,11 @@ public class UtilisateurService {
         }
     }
 
+    public Utilisateur getUtilisateurByMail(String utilisateurmail) {
+        Optional<Utilisateur> optionalUtilisateur = Optional.ofNullable(utilisateurRepository.findByMail(utilisateurmail));
+        return optionalUtilisateur.orElse(null);
+    }
+
     public Utilisateur updateUtilisateur(Utilisateur utilisateur) {
         Optional<Utilisateur> optionalUtilisateur = utilisateurRepository.findById(utilisateur.getId());
         if (optionalUtilisateur.isPresent()) {
