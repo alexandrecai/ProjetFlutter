@@ -1,16 +1,21 @@
 # projetflutter
 
-A new Flutter project.
+**M1 1 IMIS 2022/2023**
+**Groupe E:** Fatoumata Barry , Alexandre Cailloux & Matthieu Bonbon
 
-## Getting Started
+#Plan d'Application :
 
-This project is a starting point for a Flutter application.
+**Voir les détails de fonctionnement  dans la documentation technique(
+- Scenarios d'utilisation - Description de l'architecture 
+- Description courte de la mise en œuvre du design pattern 
+- Localisation d'un widget élaboré 
+- Description de la campagne de tests de l'application)**
 
-A few resources to get you started if this is your first Flutter project:
+Notre application de gestion de livres <<mini-bibliothèque>> utilise une base de données et une api que nous avons mis en place.
+Elle renferme dans le dossier /lib 3 dossiers:
+1. Controllers : contient les services des entités pour réaliser les appels vers l'api afin de récupérer les données de la base.
+2. Objects : contient les classes des différentes entités (Author,Book,Categorie,MaisonEdition,User,Whishlist)
+3. Pages: contient les pages de chaque entité pour la gestion des fonctionnalités, elle a aussi la page principale (MainPage.dart)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Nous avons également la classe principale : main.dart
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
