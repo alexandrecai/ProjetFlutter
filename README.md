@@ -7,7 +7,7 @@
 
 **Voir les détails de fonctionnement  dans la documentation technique(
 - Scenarios d'utilisation - Description de l'architecture 
-- Description courte de la mise en œuvre du design pattern 
+- Description courte de la mise en œuvre du design pattern : Le Singleton
 - Présentation d'un widget élaboré 
 - Description de la campagne de tests de l'application)**
 
