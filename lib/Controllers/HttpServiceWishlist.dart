@@ -2,15 +2,17 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:http/http.dart' as http;
-import 'package:projetflutter/Objects/Categorie.dart';
-
-import '../Objects/Author.dart';
 import '../Objects/Wishlist.dart';
+import '../Utils/PlatformService.dart';
 
 class HttpServiceWishlist {
 
-  final String baseURL = "localhost:8080";  //       Pour le Web
-  //final String baseURL = "10.0.2.2:8080"; //        pour Android
+  String baseURL = "";
+
+  HttpServiceWishlist(){
+    var platformService = PlatformService();
+    baseURL = platformService.testPlatform();
+  }
 
   Future<List<Wishlist>> getAllWishlist() async {
     Uri request = Uri.http(baseURL,"/wishlists/");

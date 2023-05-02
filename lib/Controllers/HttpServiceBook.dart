@@ -7,14 +7,18 @@ import 'package:projetflutter/Objects/Categorie.dart';
 import 'package:projetflutter/Objects/MaisonEdition.dart';
 
 import '../Objects/Author.dart';
-import '../Objects/User.dart';
+import '../Utils/PlatformService.dart';
 
 
 class HttpServiceBook {
 
 
-  final String baseURL = "localhost:8080";  //       Pour le Web
-  //final String baseURL = "10.0.2.2:8080"; //        pour Android
+  String baseURL = "";
+
+  HttpServiceBook(){
+    var platformService = PlatformService();
+    baseURL = platformService.testPlatform();
+  }
 
 
   Future<Book> getBookByID(int id) async {

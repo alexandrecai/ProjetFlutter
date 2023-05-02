@@ -2,19 +2,23 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:http/http.dart' as http;
-import 'package:projetflutter/Controllers/HttpServiceBook.dart';
 import 'package:projetflutter/Objects/Categorie.dart';
 import 'package:projetflutter/Objects/MaisonEdition.dart';
 import 'package:projetflutter/Objects/User.dart';
-import 'package:projetflutter/Objects/Wishlist.dart';
+import 'package:projetflutter/Utils/PlatformService.dart';
 
 import '../Objects/Author.dart';
 import '../Objects/Book.dart';
 
 class HttpServiceUser {
 
-  final String baseURL = "localhost:8080";  //       Pour le Web
-  //final String baseURL = "10.0.2.2:8080"; //        pour Android
+
+  String baseURL = "";
+
+  HttpServiceUser(){
+    var platformService = PlatformService();
+    baseURL = platformService.testPlatform();
+  }
 
   Future<User> getUserByID(int id) async {
     Uri request = Uri.http(baseURL,"/utilisateurs/"+ id.toString());

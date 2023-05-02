@@ -5,11 +5,16 @@ import 'package:http/http.dart' as http;
 import 'package:projetflutter/Objects/Categorie.dart';
 
 import '../Objects/Author.dart';
+import '../Utils/PlatformService.dart';
 
 class HttpServiceAuthor {
 
-  final String baseURL = "localhost:8080";  //       Pour le Web
-  //final String baseURL = "10.0.2.2:8080"; //        pour Android
+  String baseURL = "";
+
+  HttpServiceAuthor(){
+    var platformService = PlatformService();
+    baseURL = platformService.testPlatform();
+  }
 
   Future<Author> getAuthorByID(int id) async {
     Uri request = Uri.http(baseURL,"/auteurs/"+ id.toString());

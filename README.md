@@ -8,7 +8,7 @@
 **Voir les détails de fonctionnement  dans la documentation technique(
 - Scenarios d'utilisation - Description de l'architecture 
 - Description courte de la mise en œuvre du design pattern 
-- Localisation d'un widget élaboré 
+- Présentation d'un widget élaboré 
 - Description de la campagne de tests de l'application)**
 
 Notre application de gestion de livres <<mini-bibliothèque>> utilise une base de données et une api que nous avons mis en place.

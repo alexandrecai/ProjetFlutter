@@ -5,12 +5,16 @@ import 'package:http/http.dart' as http;
 import 'package:projetflutter/Objects/Categorie.dart';
 
 import '../Objects/Author.dart';
+import '../Utils/PlatformService.dart';
 
 class HttpServiceCategorie {
 
-  final String baseURL = "localhost:8080";  //       Pour le Web
-  //final String baseURL = "10.0.2.2:8080"; //        pour Android
+  String baseURL = "";
 
+  HttpServiceCategorie(){
+    var platformService = PlatformService();
+    baseURL = platformService.testPlatform();
+  }
 
   Future<Categorie> getCategorieByID(int id) async {
     Uri request = Uri.http(baseURL,"/categories/"+ id.toString());
