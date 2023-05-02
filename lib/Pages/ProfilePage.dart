@@ -82,7 +82,10 @@ class ProfilePage extends StatelessWidget{
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
+                      child:SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child:
+                      Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children:[
                             const Text("Email : ",style: TextStyle(
@@ -94,6 +97,7 @@ class ProfilePage extends StatelessWidget{
                             )),
                           ]
                       ),
+                      )
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),

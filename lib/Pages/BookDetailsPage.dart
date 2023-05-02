@@ -370,10 +370,14 @@ class BookDetailsState extends State<BookDetailsPage>{
                                 if (snapshot.hasData) {
                                   inWishList = snapshot.data!.first;
                                   borrowed = snapshot.data!.last;
-                                  return Padding(
+                                  return SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                  child:
+                                    Padding(
                                     padding: const EdgeInsets.all(15.0),
                                     child: boutons(
                                         Width, Height),
+                                  )
                                   );
                                 } else {
                                   return const Padding(
